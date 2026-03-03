@@ -48,18 +48,39 @@ class TopicService:
 
     def mark_completed(self, topic_id: int):
         self._require_topic(topic_id)
+        # Cascade to subtopics if any exist
+        from app.models.subtopic import SubTopic
+        self.repo.db.query(SubTopic).filter(SubTopic.topic_id == topic_id).update({
+            "status": StatusEnum.completed,
+            "completed_at": datetime.now(timezone.utc).replace(tzinfo=None),
+            "updated_at": datetime.now(timezone.utc).replace(tzinfo=None)
+        })
         return self.repo.update(topic_id, {
             "status": StatusEnum.completed,
+            "progress_percentage": 100.0,
             "completed_at": datetime.now(timezone.utc).replace(tzinfo=None),
         })
 
     def mark_in_progress(self, topic_id: int):
         self._require_topic(topic_id)
+        # We don't necessarily force subtopics to in-progress here, 
+        # as the user might want to pick which one to start.
         return self.repo.update(topic_id, {"status": StatusEnum.in_progress, "completed_at": None})
 
     def mark_to_learn(self, topic_id: int):
         self._require_topic(topic_id)
-        return self.repo.update(topic_id, {"status": StatusEnum.to_learn, "completed_at": None})
+        # Cascade to subtopics: reset all to to-learn
+        from app.models.subtopic import SubTopic
+        self.repo.db.query(SubTopic).filter(SubTopic.topic_id == topic_id).update({
+            "status": StatusEnum.to_learn,
+            "completed_at": None,
+            "updated_at": datetime.now(timezone.utc).replace(tzinfo=None)
+        })
+        return self.repo.update(topic_id, {
+            "status": StatusEnum.to_learn,
+            "progress_percentage": 0.0,
+            "completed_at": None
+        })
 
     def get_topic(self, topic_id: int):
         return self._require_topic(topic_id)

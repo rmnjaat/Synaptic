@@ -69,6 +69,7 @@
       font-weight: 800;
       background: var(--grad);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
@@ -203,8 +204,10 @@
 
     .content {
       flex: 1;
-      overflow-y: auto;
-      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 0;
     }
 
     .content::-webkit-scrollbar {
@@ -253,6 +256,77 @@
       gap: 16px;
     }
 
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card-compact {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: .2s;
+      position: relative;
+    }
+
+    .project-card-compact:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+    }
+
+    .project-card-compact .p-title {
+      font-size: .88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .project-card-compact .p-desc {
+      font-size: .75rem;
+      color: var(--text3);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 2.8em;
+    }
+
+    .p-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+
+    .p-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .p-meta-label {
+      font-size: .62rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .p-meta-value {
+      font-size: .7rem;
+      font-weight: 600;
+      color: var(--text2);
+    }
+
     .flex {
       display: flex;
       align-items: center;
@@ -289,6 +363,7 @@
       font-weight: 800;
       background: var(--grad);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
@@ -390,6 +465,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       padding: 16px;
+      margin-bottom: 12px;
       transition: .2s;
       cursor: pointer;
     }
@@ -762,6 +838,7 @@
       margin-bottom: 8px;
       background: var(--grad);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
@@ -800,15 +877,23 @@
     /* ── DETAIL PANEL ── */
     .detail-panel {
       display: flex;
-      gap: 20px;
+      gap: 0;
+      height: 100%;
+      overflow: hidden;
     }
 
     .detail-list {
-      flex: 0 0 340px;
+      flex: 0 0 320px;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      background: rgba(15, 22, 35, 0.4);
+      padding: 20px;
     }
 
     .detail-content {
       flex: 1;
+      overflow-y: auto;
+      padding: 32px;
       min-width: 0;
     }
 
@@ -1176,7 +1261,31 @@
     }
 
     // ── MODALS ───────────────────────────────────────────────────────────────────
-    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function resetModal(id) {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      const inputs = modal.querySelectorAll('input, textarea, select');
+      inputs.forEach(i => {
+        if (i.tagName === 'SELECT') i.selectedIndex = 0;
+        else i.value = '';
+      });
+      // Special case for custom category group in topicModal
+      const customCat = document.getElementById('customCatGroup');
+      if (customCat && id === 'topicModal') customCat.style.display = 'none';
+
+      // Clear specific error messages
+      const errors = ['loginError', 'registerError'];
+      errors.forEach(eid => {
+        const el = document.getElementById(eid);
+        if (el) { el.style.display = 'none'; el.textContent = ''; }
+      });
+    }
+
+    function openModal(id) {
+      resetModal(id);
+      document.getElementById(id).classList.add('open');
+    }
+
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
     document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
 
@@ -1198,8 +1307,11 @@
     // ── DASHBOARD ────────────────────────────────────────────────────────────────
     async function renderDashboard() {
       const c = document.getElementById('content');
-      if (!userId) { c.innerHTML = welcomeHTML(); return; }
-      c.innerHTML = `<div style="color:var(--text3);text-align:center;padding:40px">Loading progress...</div>`;
+      if (!userId) {
+        c.innerHTML = `<div style="flex:1; overflow-y:auto; display:flex; align-items:center; justify-content:center;">${welcomeHTML()}</div>`;
+        return;
+      }
+      c.innerHTML = `<div style="flex:1; overflow-y:auto; padding:32px;"><div style="color:var(--text3);text-align:center;padding:40px">Loading progress...</div></div>`;
       const res = await api('GET', `/users/${userId}/progress`);
       if (!res || !res.success) { c.innerHTML = `<div class="empty">Failed to load progress.</div>`; return; }
       const { overall_progress, categories } = res.data;
@@ -1225,14 +1337,16 @@
       const totalDone = Object.values(categories).reduce((a, v) => a + v.completed, 0);
       const totalIP = Object.values(categories).reduce((a, v) => a + v.in_progress, 0);
       c.innerHTML = `
-  <div class="grid4" style="margin-bottom:24px">
-    <div class="stat-card"><div class="stat-number">${Math.round(overall_progress)}%</div><div class="stat-label">Overall Progress</div></div>
-    <div class="stat-card"><div class="stat-number">${totalTopics}</div><div class="stat-label">Total Topics</div></div>
-    <div class="stat-card"><div class="stat-number">${totalDone}</div><div class="stat-label">Completed</div></div>
-    <div class="stat-card"><div class="stat-number">${totalIP}</div><div class="stat-label">In Progress</div></div>
-  </div>
-  <div class="section-header"><div class="section-title">📊 Category Progress</div></div>
-  <div class="grid2">${catCards}</div>`;
+  <div style="flex:1; overflow-y:auto; padding:32px;">
+    <div class="grid4" style="margin-bottom:24px">
+      <div class="stat-card"><div class="stat-number">${Math.round(overall_progress)}%</div><div class="stat-label">Overall Progress</div></div>
+      <div class="stat-card"><div class="stat-number">${totalTopics}</div><div class="stat-label">Total Topics</div></div>
+      <div class="stat-card"><div class="stat-number">${totalDone}</div><div class="stat-label">Completed</div></div>
+      <div class="stat-card"><div class="stat-number">${totalIP}</div><div class="stat-label">In Progress</div></div>
+    </div>
+    <div class="section-header"><div class="section-title">📊 Category Progress</div></div>
+    <div class="grid2">${catCards}</div>
+  </div>`;
     }
 
     function welcomeHTML() {
@@ -1276,7 +1390,7 @@
         });
       }
       const detailHTML = selectedTopic ? await topicDetailHTML(selectedTopic.id) : `<div class="empty" style="margin-top:80px"><div>Select a topic to view details</div></div>`;
-      c.innerHTML = `<div class="detail-panel"><div class="detail-list" style="overflow-y:auto;max-height:calc(100vh - 160px)">${listHTML}</div><div class="detail-content" id="topicDetail">${detailHTML}</div></div>`;
+      c.innerHTML = `<div class="detail-panel"><div class="detail-list">${listHTML}</div><div class="detail-content" id="topicDetail" style="overflow-y:auto;height:100%">${detailHTML}</div></div>`;
     }
 
     async function selectTopic(id) {
@@ -1422,18 +1536,36 @@
         return;
       }
       const cards = projects.map(p => `
-  <div class="card" style="margin-bottom:16px">
-    <div class="flex-gap" style="justify-content:space-between;margin-bottom:10px">
-      <div style="font-size:1rem;font-weight:700">🚀 ${p.name}</div>
+  <div class="project-card-compact">
+    <div class="flex-gap" style="justify-content:space-between; margin-bottom:4px">
+      <div class="p-title">🚀 ${p.name}</div>
       ${projectBadge(p.status)}
     </div>
-    ${p.description ? `<div style="font-size:.8rem;color:var(--text3);margin-bottom:12px">${p.description}</div>` : ''}
-    ${p.tech_stack ? `<div style="font-size:.75rem;color:var(--accent2);margin-bottom:12px">🛠 ${p.tech_stack}</div>` : ''}
-    ${p.github_url ? `<div style="margin-bottom:12px"><a href="${p.github_url}" target="_blank" style="color:var(--info);font-size:.78rem">📎 GitHub</a></div>` : ''}
-    <div style="font-size:.72rem;color:var(--text3)">Created ${new Date(p.created_at).toLocaleDateString()}</div>
-    ${p.status !== 'completed' ? `<div style="margin-top:12px"><button class="btn btn-sm btn-success" onclick="markProjectDone(${p.id})">Mark Completed</button></div>` : ''}
+    
+    <div class="p-desc">${p.description || 'No description provided.'}</div>
+    
+    <div class="p-meta-grid">
+      <div class="p-meta-item">
+        <div class="p-meta-label">📅 Started</div>
+        <div class="p-meta-value">${new Date(p.created_at).toLocaleDateString()}</div>
+      </div>
+      <div class="p-meta-item">
+        <div class="p-meta-label">🔄 Updated</div>
+        <div class="p-meta-value">${new Date(p.updated_at || p.created_at).toLocaleDateString()}</div>
+      </div>
+    </div>
+
+    ${p.tech_stack ? `<div style="font-size:.68rem; color:var(--accent2); margin-top:-4px">🛠 ${p.tech_stack}</div>` : ''}
+      
+    <div class="flex-gap" style="margin-top:8px; justify-content:space-between">
+      ${p.github_url ? `<a href="${p.github_url}" target="_blank" style="color:var(--info); font-size:.7rem; text-decoration:none"># GitHub</a>` : '<div></div>'}
+      ${p.status !== 'completed' ? `<button class="btn btn-xs btn-success" style="padding:4px 10px; font-size:.68rem" onclick="markProjectDone(${p.id})">Done</button>` : ''}
+    </div>
   </div>`).join('');
-      c.innerHTML = `<div style="max-width:720px">${cards}</div>`;
+      c.innerHTML = `
+      <div style="flex:1; overflow-y:auto; padding:28px 32px;">
+        <div class="project-grid">${cards}</div>
+      </div>`;
     }
 
     async function createProject() {
@@ -1451,6 +1583,7 @@
       if (!res) return;
       if (!res.success) { toast(res.message || 'Error', 'error'); return; }
       toast('Project created!', 'success');
+      resetModal('projectModal');
       closeModal('projectModal');
       renderProjects();
     }
@@ -1466,12 +1599,14 @@
     function renderSearch() {
       const c = document.getElementById('content');
       c.innerHTML = `
-  <div style="max-width:740px">
-    <div class="search-wrap" style="margin-bottom:24px">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input id="searchQ" class="form-input" placeholder="Search topics, subtopics, notes, projects..." onkeydown="if(event.key==='Enter')doSearch()" style="font-size:.95rem;padding:14px 14px 14px 42px"/>
+  <div style="flex:1; overflow-y:auto; padding:32px;">
+    <div style="max-width:740px">
+      <div class="search-wrap" style="margin-bottom:24px">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input id="searchQ" class="form-input" placeholder="Search topics, subtopics, notes, projects..." onkeydown="if(event.key==='Enter')doSearch()" style="font-size:.95rem;padding:14px 14px 14px 42px"/>
+      </div>
+      <div id="searchResults"></div>
     </div>
-    <div id="searchResults"></div>
   </div>`;
     }
 

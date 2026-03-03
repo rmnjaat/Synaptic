@@ -63,7 +63,7 @@ class TopicRepository(BaseRepository[Topic]):
         }
 
     def update_progress_percentage(self, topic_id: int) -> Optional[Topic]:
-        """Recalculate and persist progress based on subtopic completion."""
+        """Recalculate and persist progress and status based on subtopic completion."""
         from app.models.subtopic import SubTopic
 
         topic = self.get_by_id(topic_id)
@@ -72,9 +72,31 @@ class TopicRepository(BaseRepository[Topic]):
 
         subtopics = self.db.query(SubTopic).filter(SubTopic.topic_id == topic_id).all()
         total     = len(subtopics)
-        completed = sum(1 for s in subtopics if s.status == StatusEnum.completed)
+        
+        if total == 0:
+            # If no subtopics, we don't automatically override the status 
+            # as it might have been set manually, but we ensure percentage is 0.
+            topic.progress_percentage = 0.0
+        else:
+            completed   = sum(1 for s in subtopics if s.status == StatusEnum.completed)
+            in_progress = sum(1 for s in subtopics if s.status == StatusEnum.in_progress)
+            
+            # 1. Calculate Percentage
+            topic.progress_percentage = round((completed / total) * 100, 2)
+            
+            # 2. Determine Status based on Hierarchy Rules
+            if completed == total:
+                topic.status = StatusEnum.completed
+                if not topic.completed_at:
+                    topic.completed_at = datetime.now(timezone.utc).replace(tzinfo=None)
+            elif in_progress > 0 or (0 < completed < total):
+                topic.status = StatusEnum.in_progress
+                topic.completed_at = None
+            else:
+                # All subtopics are in 'to-learn' status
+                topic.status = StatusEnum.to_learn
+                topic.completed_at = None
 
-        topic.progress_percentage = round((completed / total) * 100, 2) if total > 0 else 0.0
         topic.updated_at = datetime.now(timezone.utc).replace(tzinfo=None)
         self.db.commit()
         self.db.refresh(topic)
