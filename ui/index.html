@@ -1117,7 +1117,10 @@
   <div id="toast-container"></div>
 
   <script>
-    const API = 'http://localhost:8000/api';
+    // Smart API Selection: Use localhost for local dev, or relative path for VM/Production
+    const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:8000/api'
+      : '/api';
     let userId = localStorage.getItem('lt_user_id');
     let username = localStorage.getItem('lt_username');
     let jwtToken = localStorage.getItem('lt_jwt');   // ← JWT restored from localStorage
