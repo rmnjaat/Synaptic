@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>⚡ Synaptic — Knowledge Forge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c14;
+      --surface: #0f1623;
+      --surface2: #151d2e;
+      --surface3: #1c2640;
+      --border: #1e2d4a;
+      --border2: #253554;
+      --accent: #6c63ff;
+      --accent2: #a78bfa;
+      --accent3: #38bdf8;
+      --success: #22d3a0;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --info: #60a5fa;
+      --text: #e2e8f0;
+      --text2: #94a3b8;
+      --text3: #475569;
+      --grad: linear-gradient(135deg, #6c63ff, #a78bfa);
+      --grad2: linear-gradient(135deg, #38bdf8, #6c63ff);
+      --shadow: 0 8px 32px rgba(0, 0, 0, .5);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      padding: 28px 24px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo p {
+      font-size: 0.7rem;
+      color: var(--text3);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .user-chip {
+      margin: 16px;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .user-chip .uc-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .user-chip .uc-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-chip .uc-name {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .user-chip .uc-sub {
+      font-size: .68rem;
+      color: var(--text3);
+      margin-top: 1px;
+    }
+
+    .nav {
+      padding: 8px 12px;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--text2);
+      font-size: .875rem;
+      font-weight: 500;
+      transition: .15s;
+      margin-bottom: 2px;
+    }
+
+    .nav-item:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: rgba(108, 99, 255, .15);
+      color: var(--accent2);
+      border-left: 3px solid var(--accent);
+    }
+
+    .nav-item svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .api-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .72rem;
+      color: var(--text3);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    /* ── MAIN ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .topbar h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 32px;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 4px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .card-sm {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .flex {
+      display: flex;
+      align-items: center;
+    }
+
+    .flex-gap {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* ── STAT CARD ── */
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--grad);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: .75rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-top: 4px;
+    }
+
+    /* ── PROGRESS ── */
+    .progress-ring {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-ring svg {
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring .pct {
+      position: absolute;
+      font-size: .7rem;
+      font-weight: 700;
+      color: var(--text2);
+    }
+
+    .progress-bar-wrap {
+      margin: 8px 0;
+    }
+
+    .progress-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: .75rem;
+      margin-bottom: 5px;
+      color: var(--text2);
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--surface3);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--grad);
+      transition: width .6s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    /* ── CATEGORY CARD ── */
+    .cat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: .2s;
+    }
+
+    .cat-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .cat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .cat-name {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .cat-meta {
+      font-size: .7rem;
+      color: var(--text3);
+    }
+
+    /* ── TOPIC CARD ── */
+    .topic-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      transition: .2s;
+      cursor: pointer;
+    }
+
+    .topic-card:hover {
+      border-color: var(--border2);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
+    }
+
+    .topic-card.active-card {
+      border-color: var(--accent);
+      background: rgba(108, 99, 255, .05);
+    }
+
+    .topic-title {
+      font-size: .9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .topic-desc {
+      font-size: .75rem;
+      color: var(--text3);
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    /* ── STATUS BADGES ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 99px;
+      font-size: .68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .badge-learn {
+      background: rgba(148, 163, 184, .12);
+      color: var(--text2);
+    }
+
+    .badge-progress {
+      background: rgba(251, 191, 36, .12);
+      color: var(--warning);
+    }
+
+    .badge-done {
+      background: rgba(34, 211, 160, .12);
+      color: var(--success);
+    }
+
+    .badge-planning {
+      background: rgba(96, 165, 250, .12);
+      color: var(--info);
+    }
+
+    .badge-hold {
+      background: rgba(248, 113, 113, .12);
+      color: var(--danger);
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .15s;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--grad);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      opacity: .88;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text2);
+      border: 1px solid var(--border2);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent2);
+    }
+
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: .75rem;
+    }
+
+    .btn-icon {
+      padding: 7px;
+      border-radius: 8px;
+    }
+
+    .btn-success {
+      background: rgba(34, 211, 160, .15);
+      color: var(--success);
+      border: 1px solid rgba(34, 211, 160, .25);
+    }
+
+    .btn-success:hover {
+      background: rgba(34, 211, 160, .25);
+    }
+
+    .btn-warn {
+      background: rgba(251, 191, 36, .12);
+      color: var(--warning);
+      border: 1px solid rgba(251, 191, 36, .2);
+    }
+
+    .btn-warn:hover {
+      background: rgba(251, 191, 36, .22);
+    }
+
+    .btn-danger {
+      background: rgba(248, 113, 113, .12);
+      color: var(--danger);
+      border: 1px solid rgba(248, 113, 113, .2);
+    }
+
+    .btn-danger:hover {
+      background: rgba(248, 113, 113, .22);
+    }
+
+    /* ── FORMS ── */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--text2);
+      margin-bottom: 6px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: .85rem;
+      font-family: inherit;
+      transition: .15s;
+      outline: none;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, .15);
+    }
+
+    .form-select option {
+      background: var(--surface2);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap input {
+      padding-left: 40px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 28px;
+      width: 480px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(16px);
+      transition: .25s;
+    }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
+
+    .modal h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text3);
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: .15s;
+    }
+
+    .tab.active {
+      background: var(--surface3);
+      color: var(--text);
+    }
+
+    /* ── SUBTOPIC LIST ── */
+    .st-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      transition: .15s;
+    }
+
+    .st-row:hover {
+      border-color: var(--border2);
+    }
+
+    .st-name {
+      flex: 1;
+      font-size: .82rem;
+    }
+
+    .st-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* ── TOASTS ── */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      font-size: .82rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn .3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .toast-success {
+      background: #064e3b;
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    .toast-error {
+      background: #450a0a;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+
+    .toast-info {
+      background: #1e3a5f;
+      border: 1px solid var(--info);
+      color: var(--info);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(60px);
+        opacity: 0
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1
+      }
+    }
+
+    /* ── WELCOME SCREEN ── */
+    .welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+    }
+
+    .welcome h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome p {
+      color: var(--text3);
+      margin-bottom: 24px;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text3);
+    }
+
+    .empty svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+      opacity: .3;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* ── DETAIL PANEL ── */
+    .detail-panel {
+      display: flex;
+      gap: 20px;
+    }
+
+    .detail-list {
+      flex: 0 0 340px;
+    }
+
+    .detail-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    @media(max-width:900px) {
+      .detail-panel {
+        flex-direction: column;
+      }
+
+      .detail-list {
+        flex: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h1>⚡ Synaptic</h1>
+      <p>🔮 Knowledge Forge</p>
+    </div>
+    <div class="user-chip" id="userChip">
+      <div class="flex-gap">
+        <div class="uc-avatar" id="chipAvatar">?</div>
+        <div class="uc-info">
+          <div class="uc-name" id="chipName">No user selected</div>
+          <div class="uc-sub" id="chipSub">Click Get Started to begin</div>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-item active" onclick="navigate('dashboard')" id="nav-dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="navigate('topics')" id="nav-topics">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h10" />
+        </svg>
+        Topics
+      </div>
+      <div class="nav-item" onclick="navigate('projects')" id="nav-projects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
+        </svg>
+        Projects
+      </div>
+      <div class="nav-item" onclick="navigate('search')" id="nav-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <path d="M21 21l-4.35-4.35" />
+        </svg>
+        Search
+      </div>
+    </nav>
+    <div class="sidebar-footer"></div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <h2 id="pageTitle">Dashboard</h2>
+      <div class="flex-gap" id="topbarActions"></div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="userModal">
+    <div class="modal">
+      <h3>⚡ Synaptic — Sign In</h3>
+      <!-- Tabs -->
+      <div class="tabs" id="authTabs">
+        <button class="tab active" id="tabLogin" onclick="switchAuthTab('login')">🔑 Login</button>
+        <button class="tab" id="tabRegister" onclick="switchAuthTab('register')">✨ Register</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input id="lUsername" class="form-input" placeholder="your_username" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input id="lPassword" class="form-input" type="password" placeholder="••••••••"
+            autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()" />
+        </div>
+        <div class="flex-gap">
+          <button class="btn btn-primary" onclick="doLogin()">🔑 Login</button>
+          <button class="btn btn-outline" onclick="closeModal('userModal')">Cancel</button>
+        </div>
+        <div id="loginError" style="color:var(--danger);font-size:.78rem;margin-top:8px;display:none"></div>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="registerForm" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Username *</label>
+          <input id="rUsername" class="form-input" placeholder="cool_username" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Display Name</label>
+          <input id="rDisplay" class="form-input" placeholder="Your Name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email *</label>
+          <input id="rEmail" class="form-input" type="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password * <span style="color:var(--text3)">(min 6 chars)</span></label>
+          <input id="rPassword" class="form-input" type="password" placeholder="••••••••" autocomplete="new-password"
+            onkeydown="if(event.key==='Enter') doRegister()" />
+        </div>
+        <div class="flex-gap">
+          <button class="btn btn-primary" onclick="doRegister()">✨ Create Account</button>
+          <button class="btn btn-outline" onclick="closeModal('userModal')">Cancel</button>
+        </div>
+        <div id="registerError" style="color:var(--danger);font-size:.78rem;margin-top:8px;display:none"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-overlay" id="topicModal">
+    <div class="modal">
+      <h3>✨ Create Topic</h3>
+      <div class="form-group">
+        <label class="form-label">Topic Name *</label>
+        <input id="tName" class="form-input" placeholder="e.g. Binary Trees" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="tDesc" class="form-textarea" placeholder="Brief description..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category *</label>
+        <select id="tCat" class="form-select" onchange="onCatChange(this.value)">
+          <option value="dsa">🧮 Algorithm Forge — DSA & Problem Solving</option>
+          <option value="backend">⚙️ Engine Room — Backend & APIs</option>
+          <option value="frontend">🎨 Pixel Craft — UI & Frontend</option>
+          <option value="system_design">🏗️ Architecture Lab — System Design</option>
+          <option value="devops">🚢 Launch Station — DevOps & Cloud</option>
+          <option value="database_design">🗄️ Data Vault — Databases & Storage</option>
+          <option value="projects_portfolio">💎 Masterworks — Projects & Portfolio</option>
+          <option value="other">🌀 Open Realm — Other / Custom</option>
+          <option value="__custom__">✨ + Create Custom Category...</option>
+        </select>
+      </div>
+      <div class="form-group" id="customCatGroup" style="display:none">
+        <label class="form-label">Custom Category Name</label>
+        <input id="tCustomCat" class="form-input" placeholder="e.g. Machine Learning, Mobile Dev..." />
+        <div style="font-size:.72rem;color:var(--text3);margin-top:5px">⚠️ Saved under <b>Other</b> category — custom
+          name stored in description prefix</div>
+      </div>
+      <div class="flex-gap">
+        <button class="btn btn-primary" onclick="createTopic()">✦ Forge Topic</button>
+        <button class="btn btn-outline" onclick="closeModal('topicModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="subtopicModal">
+    <div class="modal">
+      <h3>➕ Add Sub-Topic</h3>
+      <div class="form-group">
+        <label class="form-label">Sub-Topic Name *</label>
+        <input id="stName" class="form-input" placeholder="e.g. Inorder Traversal" />
+      </div>
+      <div class="flex-gap">
+        <button class="btn btn-primary" onclick="createSubtopic()">Add Sub-Topic</button>
+        <button class="btn btn-outline" onclick="closeModal('subtopicModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="projectModal">
+    <div class="modal">
+      <h3>🚀 Create Project</h3>
+      <div class="form-group">
+        <label class="form-label">Project Name *</label>
+        <input id="pName" class="form-input" placeholder="e.g. Algorithm Visualizer" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="pDesc" class="form-textarea" placeholder="What are you building?"></textarea>
+      </div>
+      <div class="grid2">
+        <div class="form-group">
+          <label class="form-label">Tech Stack</label>
+          <input id="pTech" class="form-input" placeholder="React, FastAPI..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select id="pStatus" class="form-select">
+            <option value="planning">Planning</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="on-hold">On Hold</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">GitHub URL</label>
+        <input id="pGithub" class="form-input" placeholder="https://github.com/..." />
+      </div>
+      <div class="flex-gap">
+        <button class="btn btn-primary" onclick="createProject()">Create Project</button>
+        <button class="btn btn-outline" onclick="closeModal('projectModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script>
+    const API = 'http://localhost:8000/api';
+    let userId = localStorage.getItem('lt_user_id');
+    let username = localStorage.getItem('lt_username');
+    let jwtToken = localStorage.getItem('lt_jwt');   // ← JWT restored from localStorage
+    let currentPage = 'dashboard';
+    let selectedTopic = null;
+    let selectedTopicForST = null;
+
+
+    const CATEGORIES = {
+      dsa: { icon: '🧮', name: 'Algorithm Forge', color: '#a78bfa' },
+      backend: { icon: '⚙️', name: 'Engine Room', color: '#60a5fa' },
+      frontend: { icon: '🎨', name: 'Pixel Craft', color: '#34d399' },
+      system_design: { icon: '🏗️', name: 'Architecture Lab', color: '#f59e0b' },
+      devops: { icon: '🚢', name: 'Launch Station', color: '#f87171' },
+      database_design: { icon: '🗄️', name: 'Data Vault', color: '#c084fc' },
+      projects_portfolio: { icon: '💎', name: 'Masterworks', color: '#38bdf8' },
+      other: { icon: '🌀', name: 'Open Realm', color: '#94a3b8' },
+    };
+
+    // ── API HELPERS ──────────────────────────────────────────────────────────────
+    async function api(method, path, body) {
+      try {
+        const r = await fetch(API + path, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: body ? JSON.stringify(body) : undefined,
+        });
+        return await r.json();
+      } catch (e) {
+        toast('Cannot reach API — is the server running?', 'error');
+        return null;
+      }
+    }
+
+    // ── TOAST ────────────────────────────────────────────────────────────────────
+    function toast(msg, type = 'info') {
+      const el = document.createElement('div');
+      el.className = `toast toast-${type}`;
+      el.textContent = msg;
+      document.getElementById('toast-container').appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    // ── AUTH (JWT) ───────────────────────────────────────────────────────────────
+    // jwtToken, userId, username are declared at the top of the script
+
+    function showUserModal() {
+      // If already logged in, ask to logout instead
+      if (userId) {
+        if (confirm(`Logout as ${username}?`)) logout();
+        return;
+      }
+      switchAuthTab('login');
+      openModal('userModal');
+    }
+
+    function switchAuthTab(tab) {
+      document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+      document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+      document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+    }
+
+    async function doLogin() {
+      const u = document.getElementById('lUsername').value.trim();
+      const p = document.getElementById('lPassword').value;
+      const errEl = document.getElementById('loginError');
+      errEl.style.display = 'none';
+      if (!u || !p) { errEl.textContent = 'Username and password required'; errEl.style.display = 'block'; return; }
+      const res = await api('POST', '/auth/login', { username: u, password: p });
+      if (!res) return;
+      if (!res.success) {
+        errEl.textContent = res.detail?.message || res.message || 'Login failed';
+        errEl.style.display = 'block';
+        return;
+      }
+      _applyAuthResponse(res.data);
+    }
+
+    async function doRegister() {
+      const u = document.getElementById('rUsername').value.trim();
+      const d = document.getElementById('rDisplay').value.trim();
+      const e = document.getElementById('rEmail').value.trim();
+      const p = document.getElementById('rPassword').value;
+      const errEl = document.getElementById('registerError');
+      errEl.style.display = 'none';
+      if (!u || !e || !p) { errEl.textContent = 'Username, email and password are required'; errEl.style.display = 'block'; return; }
+      const res = await api('POST', '/auth/register', { username: u, email: e, password: p, display_name: d || u });
+      if (!res) return;
+      if (!res.success) {
+        errEl.textContent = res.detail?.message || res.message || 'Registration failed';
+        errEl.style.display = 'block';
+        return;
+      }
+      _applyAuthResponse(res.data);
+    }
+
+    function _applyAuthResponse(data) {
+      jwtToken = data.access_token;
+      userId = data.user_id;
+      username = data.display_name || data.username;
+      localStorage.setItem('lt_jwt', jwtToken);
+      localStorage.setItem('lt_user_id', userId);
+      localStorage.setItem('lt_username', username);
+      updateUserChip();
+      closeModal('userModal');
+      toast(`Welcome, ${username}! ⚡`, 'success');
+      navigate(currentPage);
+    }
+
+    function logout() {
+      jwtToken = null; userId = null; username = null;
+      localStorage.removeItem('lt_jwt');
+      localStorage.removeItem('lt_user_id');
+      localStorage.removeItem('lt_username');
+      updateUserChip();
+      toast('Logged out', 'info');
+      navigate('dashboard');
+    }
+
+    function updateUserChip() {
+      const name = username || 'Sign In';
+      document.getElementById('chipName').textContent = userId ? name : 'Sign In';
+      document.getElementById('chipSub').textContent = userId ? '✦ Logged In — click to logout' : 'Click to login or register';
+      const av = document.getElementById('chipAvatar');
+      if (av) av.textContent = userId ? name.charAt(0).toUpperCase() : '?';
+      // Show/hide chip cursor
+      const chip = document.getElementById('userChip');
+      if (chip) chip.style.cursor = 'pointer';
+      chip.onclick = showUserModal;
+    }
+
+    function requireUser() {
+      if (!userId) { toast('Please sign in first', 'error'); showUserModal(); return false; }
+      return true;
+    }
+
+
+    function onCatChange(val) {
+      document.getElementById('customCatGroup').style.display = val === '__custom__' ? 'block' : 'none';
+    }
+
+    // ── MODALS ───────────────────────────────────────────────────────────────────
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+    // ── NAVIGATION ───────────────────────────────────────────────────────────────
+    function navigate(page) {
+      currentPage = page;
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('nav-' + page)?.classList.add('active');
+      const titles = { dashboard: 'Dashboard', topics: 'Topics', projects: 'Projects', search: 'Global Search' };
+      document.getElementById('pageTitle').textContent = titles[page] || page;
+      const actions = document.getElementById('topbarActions');
+      actions.innerHTML = '';
+      if (page === 'topics') actions.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openModal('topicModal')">+ New Topic</button>`;
+      if (page === 'projects') actions.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openModal('projectModal')">+ New Project</button>`;
+      const views = { dashboard: renderDashboard, topics: renderTopics, projects: renderProjects, search: renderSearch };
+      (views[page] || (() => { }))();
+    }
+
+    // ── DASHBOARD ────────────────────────────────────────────────────────────────
+    async function renderDashboard() {
+      const c = document.getElementById('content');
+      if (!userId) { c.innerHTML = welcomeHTML(); return; }
+      c.innerHTML = `<div style="color:var(--text3);text-align:center;padding:40px">Loading progress...</div>`;
+      const res = await api('GET', `/users/${userId}/progress`);
+      if (!res || !res.success) { c.innerHTML = `<div class="empty">Failed to load progress.</div>`; return; }
+      const { overall_progress, categories } = res.data;
+      let catCards = '';
+      for (const [display, stats] of Object.entries(categories)) {
+        // stats.category_key is the raw DB key; display is the pretty server-side name
+        const cat = catInfo(stats.category_key || display);
+        catCards += `
+    <div class="cat-card" onclick="navigate('topics')">
+      <div class="flex-gap">
+        <div class="cat-icon" style="background:${cat.color}22">${cat.icon}</div>
+        <div><div class="cat-name">${display}</div><div class="cat-meta">${stats.total_topics} topics • ${stats.completed} done</div></div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label"><span>${stats.progress_percentage}%</span><span>${stats.in_progress} in progress</span></div>
+        <div class="progress-bar"><div class="progress-bar-fill" style="width:${stats.progress_percentage}%;background:linear-gradient(90deg,${cat.color},${cat.color}aa)"></div></div>
+      </div>
+    </div>`;
+      }
+
+      // totals
+      const totalTopics = Object.values(categories).reduce((a, v) => a + v.total_topics, 0);
+      const totalDone = Object.values(categories).reduce((a, v) => a + v.completed, 0);
+      const totalIP = Object.values(categories).reduce((a, v) => a + v.in_progress, 0);
+      c.innerHTML = `
+  <div class="grid4" style="margin-bottom:24px">
+    <div class="stat-card"><div class="stat-number">${Math.round(overall_progress)}%</div><div class="stat-label">Overall Progress</div></div>
+    <div class="stat-card"><div class="stat-number">${totalTopics}</div><div class="stat-label">Total Topics</div></div>
+    <div class="stat-card"><div class="stat-number">${totalDone}</div><div class="stat-label">Completed</div></div>
+    <div class="stat-card"><div class="stat-number">${totalIP}</div><div class="stat-label">In Progress</div></div>
+  </div>
+  <div class="section-header"><div class="section-title">📊 Category Progress</div></div>
+  <div class="grid2">${catCards}</div>`;
+    }
+
+    function welcomeHTML() {
+      return `<div class="welcome">
+    <div style="font-size:4rem;margin-bottom:12px">⚡</div>
+    <h2>Forge Your Learning Path</h2>
+    <p>Master algorithms, architect systems, ship projects — track every milestone across 8 knowledge domains.</p>
+    <button class="btn btn-primary" onclick="showUserModal()">✦ Begin Your Journey</button>
+  </div>`;
+    }
+
+    // ── TOPICS ───────────────────────────────────────────────────────────────────
+    async function renderTopics() {
+      const c = document.getElementById('content');
+      if (!requireUser()) { c.innerHTML = welcomeHTML(); return; }
+      c.innerHTML = `<div style="color:var(--text3);text-align:center;padding:40px">Loading topics...</div>`;
+      const res = await api('GET', `/users/${userId}/topics`);
+      if (!res || !res.success) { c.innerHTML = `<div class="empty">Failed to load topics.</div>`; return; }
+      const byCategory = res.data.topics_by_category;
+      const allTopics = Object.values(byCategory).flat();
+      if (!allTopics.length) {
+        c.innerHTML = `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><div>No topics yet</div><button class="btn btn-primary" style="margin-top:16px" onclick="openModal('topicModal')">Create First Topic</button></div>`;
+        return;
+      }
+      let listHTML = '';
+      for (const [cat, topics] of Object.entries(byCategory)) {
+        if (!topics.length) continue;
+        const info = CATEGORIES[cat] || CATEGORIES.other;
+        listHTML += `<div style="margin-bottom:8px;padding:8px 12px;background:var(--surface2);border-radius:8px;font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">${info.icon} ${info.name}</div>`;
+        topics.forEach(t => {
+          const sel = selectedTopic?.id === t.id;
+          listHTML += `<div class="topic-card ${sel ? 'active-card' : ''}" id="tc-${t.id}" onclick="selectTopic(${t.id})">
+        <div class="flex-gap" style="justify-content:space-between">
+          <div class="topic-title">${t.name}</div>
+          ${statusBadge(t.status)}
+        </div>
+        ${t.description ? `<div class="topic-desc">${t.description}</div>` : ''}
+        <div class="progress-bar"><div class="progress-bar-fill" style="width:${t.progress_percentage}%"></div></div>
+        <div style="font-size:.68rem;color:var(--text3);margin-top:4px">${t.progress_percentage}% complete</div>
+      </div>`;
+        });
+      }
+      const detailHTML = selectedTopic ? await topicDetailHTML(selectedTopic.id) : `<div class="empty" style="margin-top:80px"><div>Select a topic to view details</div></div>`;
+      c.innerHTML = `<div class="detail-panel"><div class="detail-list" style="overflow-y:auto;max-height:calc(100vh - 160px)">${listHTML}</div><div class="detail-content" id="topicDetail">${detailHTML}</div></div>`;
+    }
+
+    async function selectTopic(id) {
+      selectedTopic = { id };
+      renderTopics();
+    }
+
+    async function topicDetailHTML(id) {
+      const res = await api('GET', `/topics/${id}`);
+      if (!res || !res.success) return `<div class="empty">Could not load topic.</div>`;
+      const t = res.data;
+      const stRows = (t.subtopics || []).map(s => `
+    <div class="st-row" id="str-${s.id}">
+      <div class="st-name">${s.name}</div>
+      ${statusBadge(s.status)}
+      <div class="st-actions">
+        <button class="btn btn-sm btn-success btn-icon" title="Complete" onclick="markST(${s.id},'completed')">✓</button>
+        <button class="btn btn-sm btn-warn btn-icon" title="In Progress" onclick="markST(${s.id},'in-progress')">▶</button>
+        <button class="btn btn-sm btn-outline btn-icon" title="Reset" onclick="markST(${s.id},'to-learn')">↺</button>
+        <button class="btn btn-sm btn-danger btn-icon" title="Delete" onclick="deleteST(${s.id})">✕</button>
+      </div>
+    </div>`).join('');
+      const notes = (t.notes || []).map(n => `<div class="card-sm" style="margin-bottom:8px"><div style="font-size:.82rem;font-weight:600">${n.title}</div></div>`).join('');
+      // ── Date meta row ──────────────────────────────────────────────────────
+      const dateMeta = `
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">📅 Created</span>
+          <span style="font-size:.78rem;font-weight:600;color:var(--text2)">${fmtDate(t.created_at)}</span>
+        </div>
+        ${t.completed_at ? `
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">🏁 Completed</span>
+          <span style="font-size:.78rem;font-weight:600;color:var(--success)">${fmtDate(t.completed_at)}</span>
+        </div>` : `
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">🔄 Updated</span>
+          <span style="font-size:.78rem;font-weight:600;color:var(--text2)">${fmtDate(t.updated_at)}</span>
+        </div>`}
+      </div>`;
+      return `
+  <div class="card" style="margin-bottom:16px">
+    <div class="flex-gap" style="justify-content:space-between;margin-bottom:12px">
+      <div>
+        <div style="font-size:1.05rem;font-weight:700">${t.name}</div>
+        ${t.description ? `<div style="font-size:.78rem;color:var(--text3);margin-top:4px">${t.description}</div>` : ''}
+        <div style="font-size:.72rem;color:var(--accent2);margin-top:4px">${catDisplay(t.category)}</div>
+      </div>
+      ${statusBadge(t.status)}
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-label"><span>Progress</span><span>${t.progress_percentage}%</span></div>
+      <div class="progress-bar"><div class="progress-bar-fill" style="width:${t.progress_percentage}%"></div></div>
+    </div>
+    <div class="flex-gap" style="margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-sm btn-success" onclick="markTopic(${t.id},'completed')">✓ Complete</button>
+      <button class="btn btn-sm btn-warn" onclick="markTopic(${t.id},'in-progress')">▶ In Progress</button>
+      <button class="btn btn-sm btn-outline" onclick="markTopic(${t.id},'to-learn')">↺ Reset</button>
+    </div>
+    ${dateMeta}
+  </div>
+  <div class="section-header">
+    <div class="section-title">Sub-Topics (${(t.subtopics || []).length})</div>
+    <button class="btn btn-sm btn-outline" onclick="openSTModal(${t.id})">+ Add</button>
+  </div>
+  ${stRows || `<div class="empty" style="padding:24px">No sub-topics yet</div>`}
+  ${notes ? `<div class="section-header" style="margin-top:20px"><div class="section-title">Notes</div></div>${notes}` : ''}`;
+    }
+
+    function openSTModal(topicId) { selectedTopicForST = topicId; openModal('subtopicModal'); }
+
+    async function createSubtopic() {
+      const name = document.getElementById('stName').value.trim();
+      if (!name) return toast('Name required', 'error');
+      const res = await api('POST', `/topics/${selectedTopicForST}/subtopics/create`, { name });
+      if (!res) return;
+      if (!res.success) { toast(res.message || 'Error', 'error'); return; }
+      toast('Sub-topic added!', 'success');
+      document.getElementById('stName').value = '';
+      closeModal('subtopicModal');
+      selectTopic(selectedTopicForST);
+    }
+
+    async function markST(id, status) {
+      const ep = status === 'completed' ? 'mark-completed' : status === 'in-progress' ? 'mark-in-progress' : 'mark-to-learn';
+      const res = await api('POST', `/subtopics/${id}/${ep}`);
+      if (!res) return;
+      if (!res.success) { toast(res.message, 'error'); return; }
+      toast(`Marked ${status}`, 'success');
+      renderTopics();
+    }
+
+    async function deleteST(id) {
+      if (!confirm('Delete this sub-topic?')) return;
+      await api('DELETE', `/subtopics/${id}`);
+      toast('Deleted', 'success');
+      renderTopics();
+    }
+
+    async function markTopic(id, status) {
+      const ep = status === 'completed' ? 'mark-completed' : status === 'in-progress' ? 'mark-in-progress' : 'mark-to-learn';
+      const res = await api('POST', `/topics/${id}/${ep}`);
+      if (!res || !res.success) { toast(res?.message || 'Error', 'error'); return; }
+      toast(`Topic marked ${status}`, 'success');
+      renderTopics();
+    }
+
+    async function createTopic() {
+      if (!requireUser()) return;
+      const name = document.getElementById('tName').value.trim();
+      const desc = document.getElementById('tDesc').value.trim();
+      let cat = document.getElementById('tCat').value;
+      if (!name) return toast('Name required', 'error');
+      // Custom category → use the typed name directly, no fallback to 'other'
+      if (cat === '__custom__') {
+        const customName = document.getElementById('tCustomCat').value.trim();
+        if (!customName) return toast('Please enter a custom category name', 'error');
+        cat = customName;   // ← sent straight to backend as its own category
+      }
+      const res = await api('POST', '/topics/create', { user_id: parseInt(userId), name, description: desc || undefined, category: cat });
+      if (!res) return;
+      if (!res.success) { toast(res.message || res.detail?.message || 'Error', 'error'); return; }
+      toast('Topic forged! ✦', 'success');
+      document.getElementById('tName').value = '';
+      document.getElementById('tDesc').value = '';
+      document.getElementById('tCustomCat').value = '';
+      document.getElementById('customCatGroup').style.display = 'none';
+      document.getElementById('tCat').value = 'dsa';
+      closeModal('topicModal');
+      renderTopics();
+    }
+
+    // ── PROJECTS ─────────────────────────────────────────────────────────────────
+    async function renderProjects() {
+      const c = document.getElementById('content');
+      if (!requireUser()) { c.innerHTML = welcomeHTML(); return; }
+      c.innerHTML = `<div style="color:var(--text3);text-align:center;padding:40px">Loading projects...</div>`;
+      const res = await api('GET', `/users/${userId}/projects`);
+      if (!res || !res.success) { c.innerHTML = `<div class="empty">Failed to load projects.</div>`; return; }
+      const projects = res.data;
+      if (!projects.length) {
+        c.innerHTML = `<div class="empty"><div style="font-size:3rem;margin-bottom:12px">🚀</div><div>No projects yet</div><button class="btn btn-primary" style="margin-top:16px" onclick="openModal('projectModal')">Create First Project</button></div>`;
+        return;
+      }
+      const cards = projects.map(p => `
+  <div class="card" style="margin-bottom:16px">
+    <div class="flex-gap" style="justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:1rem;font-weight:700">🚀 ${p.name}</div>
+      ${projectBadge(p.status)}
+    </div>
+    ${p.description ? `<div style="font-size:.8rem;color:var(--text3);margin-bottom:12px">${p.description}</div>` : ''}
+    ${p.tech_stack ? `<div style="font-size:.75rem;color:var(--accent2);margin-bottom:12px">🛠 ${p.tech_stack}</div>` : ''}
+    ${p.github_url ? `<div style="margin-bottom:12px"><a href="${p.github_url}" target="_blank" style="color:var(--info);font-size:.78rem">📎 GitHub</a></div>` : ''}
+    <div style="font-size:.72rem;color:var(--text3)">Created ${new Date(p.created_at).toLocaleDateString()}</div>
+    ${p.status !== 'completed' ? `<div style="margin-top:12px"><button class="btn btn-sm btn-success" onclick="markProjectDone(${p.id})">Mark Completed</button></div>` : ''}
+  </div>`).join('');
+      c.innerHTML = `<div style="max-width:720px">${cards}</div>`;
+    }
+
+    async function createProject() {
+      if (!requireUser()) return;
+      const name = document.getElementById('pName').value.trim();
+      if (!name) return toast('Name required', 'error');
+      const body = {
+        user_id: parseInt(userId), name,
+        description: document.getElementById('pDesc').value.trim() || undefined,
+        tech_stack: document.getElementById('pTech').value.trim() || undefined,
+        github_url: document.getElementById('pGithub').value.trim() || undefined,
+        status: document.getElementById('pStatus').value,
+      };
+      const res = await api('POST', '/projects/create', body);
+      if (!res) return;
+      if (!res.success) { toast(res.message || 'Error', 'error'); return; }
+      toast('Project created!', 'success');
+      closeModal('projectModal');
+      renderProjects();
+    }
+
+    async function markProjectDone(id) {
+      const res = await api('POST', `/projects/${id}/mark-completed`);
+      if (!res || !res.success) { toast(res?.message || 'Error', 'error'); return; }
+      toast('Project completed! 🎉', 'success');
+      renderProjects();
+    }
+
+    // ── SEARCH ───────────────────────────────────────────────────────────────────
+    function renderSearch() {
+      const c = document.getElementById('content');
+      c.innerHTML = `
+  <div style="max-width:740px">
+    <div class="search-wrap" style="margin-bottom:24px">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input id="searchQ" class="form-input" placeholder="Search topics, subtopics, notes, projects..." onkeydown="if(event.key==='Enter')doSearch()" style="font-size:.95rem;padding:14px 14px 14px 42px"/>
+    </div>
+    <div id="searchResults"></div>
+  </div>`;
+    }
+
+    async function doSearch() {
+      if (!requireUser()) return;
+      const q = document.getElementById('searchQ').value.trim();
+      if (q.length < 2) return toast('Type at least 2 characters', 'error');
+      document.getElementById('searchResults').innerHTML = `<div style="color:var(--text3)">Searching...</div>`;
+      const res = await api('GET', `/search/global?user_id=${userId}&q=${encodeURIComponent(q)}`);
+      if (!res || !res.success) { document.getElementById('searchResults').innerHTML = `<div class="empty">Search failed.</div>`; return; }
+      const { total_count, topics, sub_topics, notes, projects, query } = res.data;
+      let html = `<div style="font-size:.8rem;color:var(--text3);margin-bottom:20px">${total_count} result(s) for "<b style="color:var(--text)">${query}</b>"</div>`;
+      if (topics.length) html += renderGroup('📚 Topics', topics.map(t => `<div class="card-sm" style="margin-bottom:8px;cursor:pointer" onclick="navigate('topics')"><div style="font-size:.85rem;font-weight:600">${t.name}</div><div style="font-size:.72rem;color:var(--text3);margin-top:3px">${t.category}</div></div>`).join(''));
+      if (sub_topics.length) html += renderGroup('📌 Sub-Topics', sub_topics.map(s => `<div class="card-sm" style="margin-bottom:8px"><div style="font-size:.85rem;font-weight:600">${s.name}</div></div>`).join(''));
+      if (notes.length) html += renderGroup('📝 Notes', notes.map(n => `<div class="card-sm" style="margin-bottom:8px"><div style="font-size:.85rem;font-weight:600">${n.title}</div></div>`).join(''));
+      if (projects.length) html += renderGroup('🚀 Projects', projects.map(p => `<div class="card-sm" style="margin-bottom:8px"><div style="font-size:.85rem;font-weight:600">${p.name}</div>${p.description ? `<div style="font-size:.72rem;color:var(--text3)">${p.description}</div>` : ''}</div>`).join(''));
+      if (!total_count) html += `<div class="empty" style="padding:40px">No results found.</div>`;
+      document.getElementById('searchResults').innerHTML = html;
+    }
+
+    function renderGroup(title, content) {
+      return `<div style="margin-bottom:20px"><div class="section-title" style="margin-bottom:12px">${title}</div>${content}</div>`;
+    }
+
+    // ── BADGES ───────────────────────────────────────────────────────────────────
+    function statusBadge(s) {
+      const map = { 'to-learn': 'badge-learn', 'in-progress': 'badge-progress', 'completed': 'badge-done' };
+      const labels = { 'to-learn': 'To Learn', 'in-progress': 'In Progress', 'completed': 'Done' };
+      return `<span class="badge ${map[s] || 'badge-learn'}">${labels[s] || s}</span>`;
+    }
+
+    function projectBadge(s) {
+      const map = { 'planning': 'badge-planning', 'in-progress': 'badge-progress', 'completed': 'badge-done', 'on-hold': 'badge-hold' };
+      return `<span class="badge ${map[s] || 'badge-planning'}">${s}</span>`;
+    }
+
+    // ── HELPERS ───────────────────────────────────────────────────────────────────
+    function fmtDate(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+        + ' · ' + d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    const KNOWN_CATS = {
+      dsa: '🧮 Algorithm Forge', backend: '⚙️ Engine Room', frontend: '🎨 Pixel Craft',
+      system_design: '🏗️ Architecture Lab', devops: '🚢 Launch Station',
+      database_design: '🗄️ Data Vault', projects_portfolio: '💎 Masterworks', other: '🌀 Open Realm',
+    };
+    function catDisplay(cat) {
+      return KNOWN_CATS[cat] || ('✨ ' + cat.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()));
+    }
+
+    // Unknown categories in CATEGORIES map → generate a colour on-the-fly
+    function catInfo(cat) {
+      const known = {
+        dsa: { icon: '🧮', color: '#a78bfa' },
+        backend: { icon: '⚙️', color: '#60a5fa' },
+        frontend: { icon: '🎨', color: '#34d399' },
+        system_design: { icon: '🏗️', color: '#f59e0b' },
+        devops: { icon: '🚢', color: '#f87171' },
+        database_design: { icon: '🗄️', color: '#c084fc' },
+        projects_portfolio: { icon: '💎', color: '#38bdf8' },
+        other: { icon: '🌀', color: '#94a3b8' },
+      };
+      if (known[cat]) return known[cat];
+      // Generate a stable-ish colour from the category string
+      let h = 0;
+      for (let i = 0; i < cat.length; i++) h = (h * 31 + cat.charCodeAt(i)) & 0xffffff;
+      const hue = h % 360;
+      return { icon: '✨', color: `hsl(${hue},60%,65%)` };
+    }
+
+
+    // ── INIT ─────────────────────────────────────────────────────────────────────
+    updateUserChip();
+    navigate('dashboard');
+  </script>
+</body>
+
+</html>
