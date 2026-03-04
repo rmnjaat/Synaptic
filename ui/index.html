@@ -1409,9 +1409,15 @@
           </select>
         </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">GitHub URL</label>
-        <input id="pGithub" class="form-input" placeholder="https://github.com/..." />
+      <div class="grid2">
+        <div class="form-group">
+          <label class="form-label">GitHub URL</label>
+          <input id="pGithub" class="form-input" placeholder="https://github.com/..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Live URL</label>
+          <input id="pLiveUrl" class="form-input" placeholder="https://..." />
+        </div>
       </div>
       <div class="flex-gap">
         <button class="btn btn-primary" onclick="createProject()">Create Project</button>
@@ -1447,9 +1453,15 @@
           </select>
         </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">GitHub URL</label>
-        <input id="editPGithub" class="form-input" placeholder="https://github.com/..." />
+      <div class="grid2">
+        <div class="form-group">
+          <label class="form-label">GitHub URL</label>
+          <input id="editPGithub" class="form-input" placeholder="https://github.com/..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Live URL</label>
+          <input id="editPLiveUrl" class="form-input" placeholder="https://..." />
+        </div>
       </div>
       <div class="flex-gap">
         <button class="btn btn-primary" onclick="updateProject()">Save Changes</button>
@@ -2013,7 +2025,11 @@
     ${p.tech_stack ? `<div style="font-size:.68rem; color:var(--accent2); margin-top:-4px">🛠 ${p.tech_stack}</div>` : ''}
       
     <div class="flex-gap" style="margin-top:12px; justify-content:space-between">
-      ${p.github_url ? `<a href="${p.github_url}" target="_blank" onclick="event.stopPropagation()" style="color:var(--info); font-size:.7rem; text-decoration:none"># GitHub</a>` : '<div></div>'}
+      <div class="flex-gap" style="gap:12px">
+        ${p.github_url ? `<a href="${p.github_url}" target="_blank" onclick="event.stopPropagation()" style="color:var(--info); font-size:.7rem; text-decoration:none"># GitHub</a>` : ''}
+        ${p.live_demo_url ? `<a href="${p.live_demo_url}" target="_blank" onclick="event.stopPropagation()" style="color:var(--success); font-size:.7rem; text-decoration:none"># Live</a>` : ''}
+        ${!p.github_url && !p.live_demo_url ? '<div></div>' : ''}
+      </div>
       <div style="display:flex; gap:6px">
         ${p.status !== 'completed' ? `<button class="btn btn-xs btn-success" style="padding:4px 10px; font-size:.68rem" onclick="event.stopPropagation(); markProjectDone(${p.id})">Done</button>` : ''}
         <button class="btn btn-xs btn-danger" style="padding:4px 10px; font-size:.68rem" onclick="event.stopPropagation(); deleteProject(${p.id})">✕</button>
@@ -2036,6 +2052,7 @@
         description: document.getElementById('pDesc').value.trim() || undefined,
         tech_stack: document.getElementById('pTech').value.trim() || undefined,
         github_url: document.getElementById('pGithub').value.trim() || undefined,
+        live_demo_url: document.getElementById('pLiveUrl').value.trim() || undefined,
         status: document.getElementById('pStatus').value,
       };
       const res = await api('POST', '/projects/create', body);
@@ -2063,6 +2080,7 @@
       document.getElementById('editPDesc').value = p.description || '';
       document.getElementById('editPTech').value = p.tech_stack || '';
       document.getElementById('editPGithub').value = p.github_url || '';
+      document.getElementById('editPLiveUrl').value = p.live_demo_url || '';
       document.getElementById('editPStatus').value = p.status;
     }
 
@@ -2073,6 +2091,7 @@
         description: document.getElementById('editPDesc').value.trim() || null,
         tech_stack: document.getElementById('editPTech').value.trim() || null,
         github_url: document.getElementById('editPGithub').value.trim() || null,
+        live_demo_url: document.getElementById('editPLiveUrl').value.trim() || null,
         status: document.getElementById('editPStatus').value,
       };
       if (!body.name) return toast('Name required', 'error');
