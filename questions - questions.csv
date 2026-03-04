@@ -1,0 +1,245 @@
+Topic,Difficulty,Problem Name,URL,Status
+Arrays,Easy,Two Sum,https://leetcode.com/problems/two-sum/,TRUE
+Arrays,Easy,Best Time to Buy and Sell Stock,https://leetcode.com/problems/best-time-to-buy-and-sell-stock/,TRUE
+Arrays,Easy,Plus One,https://leetcode.com/problems/plus-one/,TRUE
+Arrays,Easy,Move Zeroes,https://leetcode.com/problems/move-zeroes/,TRUE
+Arrays,Easy,Best Time to Buy and Sell Stock II,https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/,FALSE
+Arrays,Easy,Running Sum of 1d Array,https://leetcode.com/problems/running-sum-of-1d-array/,TRUE
+Arrays,Easy,Find Pivot Index,https://leetcode.com/problems/find-pivot-index/,TRUE
+Arrays,Easy,Majority Element,https://leetcode.com/problems/majority-element/,TRUE
+Arrays,Easy,Fibonacci Number,https://leetcode.com/problems/fibonacci-number/,TRUE
+Arrays,Easy,Squares of a Sorted Array,https://leetcode.com/problems/squares-of-a-sorted-array/,TRUE
+Arrays,Easy,Pascal's Triangle,https://leetcode.com/problems/pascals-triangle/,TRUE
+Arrays,Easy,Remove Duplicates from Sorted Array,https://leetcode.com/problems/remove-duplicates-from-sorted-array/,TRUE
+Arrays,Medium,Merge Intervals,https://leetcode.com/problems/merge-intervals/,FALSE
+Arrays,Medium,3Sum,https://leetcode.com/problems/3sum/,FALSE
+Arrays,Medium,Product of Array Except Self,https://leetcode.com/problems/product-of-array-except-self/,FALSE
+Arrays,Medium,Insert Delete GetRandom O(1),https://leetcode.com/problems/insert-delete-getrandom-o1/,FALSE
+Arrays,Medium,Subarray Sum Equals K,https://leetcode.com/problems/subarray-sum-equals-k/,FALSE
+Arrays,Medium,Spiral Matrix,https://leetcode.com/problems/spiral-matrix/,FALSE
+Arrays,Medium,Container With Most Water,https://leetcode.com/problems/container-with-most-water/,FALSE
+Arrays,Medium,Rotate Image,https://leetcode.com/problems/rotate-image/,FALSE
+Arrays,Medium,Word Search,https://leetcode.com/problems/word-search/,FALSE
+Arrays,Medium,3Sum Closest,https://leetcode.com/problems/3sum-closest/,FALSE
+Arrays,Medium,Game of Life,https://leetcode.com/problems/game-of-life/,FALSE
+Arrays,Medium,Pairs of Songs With Total Durations Divisible by 60,https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/,FALSE
+Arrays,Medium,4Sum,https://leetcode.com/problems/4sum/,FALSE
+Arrays,Medium,Find the Duplicate Number,https://leetcode.com/problems/find-the-duplicate-number/,FALSE
+Arrays,Medium,Combination Sum,https://leetcode.com/problems/combination-sum/,FALSE
+Arrays,Medium,Jump Game II,https://leetcode.com/problems/jump-game-ii/,FALSE
+Arrays,Medium,Maximum Points You Can Obtain from Cards,https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/,FALSE
+Arrays,Medium,Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts,https://leetcode.com/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/,FALSE
+Arrays,Medium,Max Area of Island,https://leetcode.com/problems/max-area-of-island/,FALSE
+Arrays,Medium,Find All Duplicates in an Array,https://leetcode.com/problems/find-all-duplicates-in-an-array/,FALSE
+Arrays,Medium,K-diff Pairs in an Array,https://leetcode.com/problems/k-diff-pairs-in-an-array/,FALSE
+Arrays,Medium,Subsets,https://leetcode.com/problems/subsets/,FALSE
+Arrays,Medium,Invalid Transactions,https://leetcode.com/problems/invalid-transactions/,FALSE
+Arrays,Medium,Jump Game,https://leetcode.com/problems/jump-game/,FALSE
+Arrays,Medium,Subarray Sums Divisible by K,https://leetcode.com/problems/subarray-sums-divisible-by-k/,FALSE
+Arrays,Hard,First Missing Positive,https://leetcode.com/problems/first-missing-positive/,FALSE
+Arrays,Hard,Largest Rectangle in Histogram,https://leetcode.com/problems/largest-rectangle-in-histogram/,FALSE
+Arrays,Hard,Insert Delete GetRandom O(1) - Duplicates allowed,https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/,FALSE
+Arrays,Hard,Best Time to Buy and Sell Stock III,https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/,FALSE
+Arrays,Hard,Max Value of Equation,https://leetcode.com/problems/max-value-of-equation/,FALSE
+Dynamic Programming,Easy,Maximum Subarray,https://leetcode.com/problems/maximum-subarray/,FALSE
+Dynamic Programming,Easy,Climbing Stairs,https://leetcode.com/problems/climbing-stairs,FALSE
+Dynamic Programming,Easy,Divisor Game,https://leetcode.com/problems/divisor-game/,FALSE
+Dynamic Programming,Easy,Counting Bits,https://leetcode.com/problems/counting-bits/,FALSE
+Dynamic Programming,Medium,Decode Ways,https://leetcode.com/problems/decode-ways/,FALSE
+Dynamic Programming,Medium,Word Break,https://leetcode.com/problems/word-break/,FALSE
+Dynamic Programming,Medium,Delete and Earn,https://leetcode.com/problems/delete-and-earn/,FALSE
+Dynamic Programming,Medium,Maximal Square,https://leetcode.com/problems/maximal-square/,FALSE
+Dynamic Programming,Medium,Coin Change,https://leetcode.com/problems/coin-change/,FALSE
+Dynamic Programming,Medium,Maximum Product Subarray,https://leetcode.com/problems/maximum-product-subarray/,FALSE
+Dynamic Programming,Medium,Maximum Length of Repeated Subarray,https://leetcode.com/problems/maximum-length-of-repeated-subarray/,FALSE
+Dynamic Programming,Medium,Palindromic Substrings,https://leetcode.com/problems/palindromic-substrings/,FALSE
+Dynamic Programming,Medium,House Robber,https://leetcode.com/problems/house-robber/,FALSE
+Dynamic Programming,Medium,Continuous Subarray Sum,https://leetcode.com/problems/continuous-subarray-sum/,FALSE
+Dynamic Programming,Medium,Knight Dialer,https://leetcode.com/problems/knight-dialer/,FALSE
+Dynamic Programming,Medium,Longest Increasing Subsequence,https://leetcode.com/problems/longest-increasing-subsequence/,FALSE
+Dynamic Programming,Medium,Unique Paths,https://leetcode.com/problems/unique-paths/,FALSE
+Dynamic Programming,Medium,Count Square Submatrices with All Ones,https://leetcode.com/problems/count-square-submatrices-with-all-ones/,FALSE
+Dynamic Programming,Medium,Range Sum Query 2D - Immutable,https://leetcode.com/problems/range-sum-query-2d-immutable/,FALSE
+Dynamic Programming,Medium,Longest Arithmetic Subsequence,https://leetcode.com/problems/longest-arithmetic-subsequence/,FALSE
+Dynamic Programming,Hard,Trapping Rain Water,https://leetcode.com/problems/trapping-rain-water/,FALSE
+Dynamic Programming,Hard,Word Break II,https://leetcode.com/problems/word-break-ii/,FALSE
+Dynamic Programming,Hard,Regular Expression Matching,https://leetcode.com/problems/regular-expression-matching/,FALSE
+Dynamic Programming,Hard,Maximal Rectangle,https://leetcode.com/problems/maximal-rectangle/,FALSE
+Dynamic Programming,Hard,Longest Valid Parentheses,https://leetcode.com/problems/longest-valid-parentheses/,FALSE
+Dynamic Programming,Hard,Edit Distance,https://leetcode.com/problems/edit-distance/,FALSE
+Dynamic Programming,Hard,Minimum Difficulty of a Job Schedule,https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/,FALSE
+Dynamic Programming,Hard,Frog Jump,https://leetcode.com/problems/frog-jump/,FALSE
+Dynamic Programming,Hard,Best Time to Buy and Sell Stock IV,https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/,FALSE
+Dynamic Programming,Hard,Burst Balloons,https://leetcode.com/problems/burst-balloons/,FALSE
+Dynamic Programming,Hard,Minimum Cost to Merge Stones,https://leetcode.com/problems/minimum-cost-to-merge-stones/,FALSE
+Dynamic Programming,Hard,Minimum Insertion Steps to Make a String Palindrome,https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/,FALSE
+Dynamic Programming,Hard,Super Egg Drop,https://leetcode.com/problems/super-egg-drop/,FALSE
+Dynamic Programming,Hard,Count Different Palindromic Subsequences,https://leetcode.com/problems/count-different-palindromic-subsequences/,FALSE
+Dynamic Programming,Hard,Minimum Cost to Cut a Stick,https://leetcode.com/problems/minimum-cost-to-cut-a-stick/,FALSE
+Strings,Easy,Add Strings,https://leetcode.com/problems/add-strings/,FALSE
+Strings,Easy,Longest Common Prefix,https://leetcode.com/problems/longest-common-prefix/,FALSE
+Strings,Easy,Valid Palindrome II,https://leetcode.com/problems/valid-palindrome-ii/,FALSE
+Strings,Easy,Roman to Integer,https://leetcode.com/problems/roman-to-integer/,FALSE
+Strings,Easy,Implement strStr(),https://leetcode.com/problems/implement-strstr/,FALSE
+Strings,Medium,Longest Substring Without Repeating Characters,https://leetcode.com/problems/longest-substring-without-repeating-characters/,FALSE
+Strings,Medium,Minimum Remove to Make Valid Parentheses,https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/,FALSE
+Strings,Medium,Longest Palindromic Substring,https://leetcode.com/problems/longest-palindromic-substring/,FALSE
+Strings,Medium,Group Anagrams,https://leetcode.com/problems/group-anagrams/,FALSE
+Strings,Medium,Generate Parentheses,https://leetcode.com/problems/generate-parentheses/,FALSE
+Strings,Medium,Basic Calculator II,https://leetcode.com/problems/basic-calculator-ii/,FALSE
+Strings,Medium,Integer to Roman,https://leetcode.com/problems/integer-to-roman/,FALSE
+Strings,Medium,Reverse Words in a String,https://leetcode.com/problems/reverse-words-in-a-string/,FALSE
+Strings,Medium,Simplify Path,https://leetcode.com/problems/simplify-path/,FALSE
+Strings,Medium,Zigzag Conversion,https://leetcode.com/problems/zigzag-conversion/,FALSE
+Strings,Hard,Text Justification,https://leetcode.com/problems/text-justification/,FALSE
+Strings,Hard,Integer to English Words,https://leetcode.com/problems/integer-to-english-words/,FALSE
+Strings,Hard,Minimum Window Substring,https://leetcode.com/problems/minimum-window-substring/,FALSE
+Strings,Hard,Valid Number,https://leetcode.com/problems/valid-number/,FALSE
+Strings,Hard,Distinct Subsequences,https://leetcode.com/problems/distinct-subsequences/,FALSE
+Strings,Hard,Smallest Range Covering Elements from K Lists,https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/,FALSE
+Strings,Hard,Substring with Concatenation of All Words,https://leetcode.com/problems/substring-with-concatenation-of-all-words/,FALSE
+Maths,Easy,Reverse Integer,https://leetcode.com/problems/reverse-integer/,FALSE
+Maths,Easy,Add Binary,https://leetcode.com/problems/add-binary/,FALSE
+Maths,Easy,Palindrome Number,https://leetcode.com/problems/palindrome-number/,FALSE
+Maths,Easy,Minimum Moves to Equal Array Elements,https://leetcode.com/problems/minimum-moves-to-equal-array-elements/,FALSE
+Maths,Easy,Happy Number,https://leetcode.com/problems/happy-number/,FALSE
+Maths,Easy,Excel Sheet Column Title,https://leetcode.com/problems/excel-sheet-column-title/,FALSE
+Maths,Easy,Missing Number,https://leetcode.com/problems/missing-number/,FALSE
+Maths,Easy,Maximum Product of Three Numbers,https://leetcode.com/problems/maximum-product-of-three-numbers/,FALSE
+Maths,Easy,Power of Two,https://leetcode.com/problems/power-of-two/,FALSE
+Maths,Medium,Encode and Decode TinyURL,https://leetcode.com/problems/encode-and-decode-tinyurl/,FALSE
+Maths,Medium,String to Integer (atoi),https://leetcode.com/problems/string-to-integer-atoi/,FALSE
+Maths,Medium,Multiply Strings,https://leetcode.com/problems/multiply-strings/,FALSE
+Maths,Medium,Angle Between Hands of a Clock,https://leetcode.com/problems/angle-between-hands-of-a-clock/,FALSE
+Maths,Medium,Integer Break,https://leetcode.com/problems/integer-break/,FALSE
+Maths,Medium,Valid Square,https://leetcode.com/problems/valid-square/,FALSE
+Maths,Medium,The Kth Factor of N,https://leetcode.com/problems/the-kth-factor-of-n/,FALSE
+Maths,Hard,Basic Calculator,https://leetcode.com/problems/basic-calculator/,FALSE
+Maths,Hard,Max Points on a Line,https://leetcode.com/problems/max-points-on-a-line/,FALSE
+Maths,Hard,Permutation Sequence,https://leetcode.com/problems/permutation-sequence/,FALSE
+Maths,Hard,Number of Digit One,https://leetcode.com/problems/number-of-digit-one/,FALSE
+Greedy,Medium,Task Scheduler,https://leetcode.com/problems/task-scheduler/,FALSE
+Greedy,Medium,Gas Station,https://leetcode.com/problems/gas-station/,FALSE
+Greedy,Medium,Minimum Deletion Cost to Avoid Repeating Letters,https://leetcode.com/problems/minimum-deletion-cost-to-avoid-repeating-letters/,FALSE
+Greedy,Medium,Maximum Number of Events That Can Be Attended,https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/,FALSE
+Greedy,Medium,Minimum Deletions to Make Character Frequencies Unique,https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/,FALSE
+Greedy,Medium,Remove K Digits,https://leetcode.com/problems/remove-k-digits/,FALSE
+Greedy,Medium,Restore the Array From Adjacent Pairs,https://leetcode.com/problems/restore-the-array-from-adjacent-pairs/,FALSE
+Greedy,Medium,Non-overlapping Intervals,https://leetcode.com/problems/non-overlapping-intervals/,FALSE
+Greedy,Hard,Candy,https://leetcode.com/problems/candy/,FALSE
+Greedy,Hard,Minimum Number of Taps to Open to Water a Garden,https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden/,FALSE
+Greedy,Hard,Create Maximum Number,https://leetcode.com/problems/create-maximum-number/,FALSE
+DFS,Medium,Letter Combinations of a Phone Number,https://leetcode.com/problems/letter-combinations-of-a-phone-number/,FALSE
+DFS,Medium,Course Schedule II,https://leetcode.com/problems/course-schedule-ii/,FALSE
+DFS,Medium,Decode String,https://leetcode.com/problems/decode-string/,FALSE
+DFS,Medium,Number of Provinces,https://leetcode.com/problems/number-of-provinces/,FALSE
+DFS,Medium,Clone Graph,https://leetcode.com/problems/clone-graph/,FALSE
+DFS,Medium,Shortest Bridge,https://leetcode.com/problems/shortest-bridge/,FALSE
+DFS,Medium,All Paths From Source to Target,https://leetcode.com/problems/all-paths-from-source-to-target/,FALSE
+DFS,Medium,Surrounded Regions,https://leetcode.com/problems/surrounded-regions/,FALSE
+DFS,Medium,House Robber III,https://leetcode.com/problems/house-robber-iii/,FALSE
+DFS,Hard,Critical Connections in a Network,https://leetcode.com/problems/critical-connections-in-a-network/,FALSE
+DFS,Hard,Remove Invalid Parentheses,https://leetcode.com/problems/remove-invalid-parentheses/,FALSE
+DFS,Hard,Longest Increasing Path in a Matrix,https://leetcode.com/problems/longest-increasing-path-in-a-matrix/,FALSE
+HASH TABLE,Easy,Verifying an Alien Dictionary,https://leetcode.com/problems/verifying-an-alien-dictionary/,TRUE
+HASH TABLE,Easy,Design Hashmap,https://leetcode.com/problems/design-hashmap/,TRUE
+HASH TABLE,Medium,Top K Frequent Elements,https://leetcode.com/problems/top-k-frequent-elements/,TRUE
+Heap,Medium,Design Twitter,https://leetcode.com/problems/design-twitter/,FALSE
+BINARY SEARCH,Easy,Sqrt(x),https://leetcode.com/problems/sqrtx/,FALSE
+BINARY SEARCH,Easy,Binary Search,https://leetcode.com/problems/binary-search/,FALSE
+BINARY SEARCH,Easy,Count Negative Numbers in a Sorted Matrix,https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/,FALSE
+BINARY SEARCH,Easy,Peak Index in a Mountain Array,https://leetcode.com/problems/peak-index-in-a-mountain-array/,FALSE
+BINARY SEARCH,Medium,Time Based Key-Value Store,https://leetcode.com/problems/time-based-key-value-store/,FALSE
+BINARY SEARCH,Medium,Search in Rotated Sorted Array,https://leetcode.com/problems/search-in-rotated-sorted-array/,FALSE
+BINARY SEARCH,Medium,"Implement Pow(x,n)",https://leetcode.com/problems/powx-n/,FALSE
+BINARY SEARCH,Medium,Find First and Last Position of Element in Sorted Array,https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/,FALSE
+BINARY SEARCH,Medium,Find Peak Element,https://leetcode.com/problems/find-peak-element/,FALSE
+BINARY SEARCH,Medium,Search a 2D Matrix,https://leetcode.com/problems/search-a-2d-matrix/,FALSE
+BINARY SEARCH,Medium,Divide Two Integers,https://leetcode.com/problems/divide-two-integers/,FALSE
+BINARY SEARCH,Medium,Capacity To Ship Packages Within D Days,https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/,FALSE
+BINARY SEARCH,Medium,Minimum Limit of Balls in a Bag,https://leetcode.com/problems/minimum-limit-of-balls-in-a-bag/,FALSE
+BINARY SEARCH,Hard,Median of Two Sorted Arrays,https://leetcode.com/problems/median-of-two-sorted-arrays/,FALSE
+BINARY SEARCH,Hard,Count of Smaller Numbers After Self,https://leetcode.com/problems/count-of-smaller-numbers-after-self/,FALSE
+BINARY SEARCH,Hard,Max Sum of Rectangle No Larger Than K,https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/,FALSE
+BINARY SEARCH,Hard,Split Array Largest Sum,https://leetcode.com/problems/split-array-largest-sum/,FALSE
+BINARY SEARCH,Hard,Shortest Subarray with Sum at Least K,https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/,FALSE
+BFS,Medium,Number of Islands,https://leetcode.com/problems/number-of-islands/,FALSE
+BFS,Medium,Rotting Oranges,https://leetcode.com/problems/rotting-oranges/,FALSE
+BFS,Medium,Snakes and Ladders,https://leetcode.com/problems/snakes-and-ladders/,FALSE
+BFS,Medium,Is Graph Bipartite?,https://leetcode.com/problems/is-graph-bipartite/,FALSE
+BFS,Medium,Minimum Jumps to Reach Home,https://leetcode.com/problems/minimum-jumps-to-reach-home/,FALSE
+BFS,Hard,Word Ladder,https://leetcode.com/problems/word-ladder/,FALSE
+BFS,Hard,Word Ladder II,https://leetcode.com/problems/word-ladder-ii/,FALSE
+BFS,Hard,Cut Off Trees for Golf Event,https://leetcode.com/problems/cut-off-trees-for-golf-event/,FALSE
+BFS,Hard,Reachable Nodes in Subdivided Graph,https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/,FALSE
+TWO POINTER,Medium / Hard,Partition Labels,https://leetcode.com/problems/partition-labels/,FALSE
+TWO POINTER,Medium / Hard,Sort Colors,https://leetcode.com/problems/sort-colors/,FALSE
+TWO POINTER,Medium / Hard,Longest Repeating Character Replacement,https://leetcode.com/problems/longest-repeating-character-replacement/,FALSE
+TWO POINTER,Medium / Hard,Maximum Number of Visible Points,https://leetcode.com/problems/maximum-number-of-visible-points/,FALSE
+TWO POINTER,Medium / Hard,Subarrays with K Different Integers,https://leetcode.com/problems/subarrays-with-k-different-integers/,FALSE
+STACK,Easy,Min Stack,https://leetcode.com/problems/min-stack/,TRUE
+STACK,Easy,Backspace String Compare,https://leetcode.com/problems/backspace-string-compare/,TRUE
+STACK,Easy,Implement Queue Using Stacks,https://leetcode.com/problems/implement-queue-using-stacks/,TRUE
+STACK,Easy,Implement Stack Using Queues,https://leetcode.com/problems/implement-stack-using-queues/,TRUE
+STACK,Medium,Remove All Adjacent Duplicates in String II,https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/,TRUE
+STACK,Medium,Daily Temperatures,https://leetcode.com/problems/daily-temperatures/,TRUE
+STACK,Medium,Flatten Nested List Iterator,https://leetcode.com/problems/flatten-nested-list-iterator/,TRUE
+STACK,Medium,Online Stock Span,https://leetcode.com/problems/online-stock-span/,TRUE
+STACK,Hard,Minimum Cost Tree From Leaf Values,https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/,TRUE
+STACK,Medium,Sum of Subarray Minimums,https://leetcode.com/problems/sum-of-subarray-minimums/,TRUE
+STACK,Easy,Evaluate Reverse Polish Notation,https://leetcode.com/problems/evaluate-reverse-polish-notation/,TRUE
+GRAPH,Easy,Employee Importance,https://leetcode.com/problems/employee-importance/,FALSE
+GRAPH,Easy,Find the Town Judge,https://leetcode.com/problems/find-the-town-judge/,FALSE
+GRAPH,Medium,Evaluate Division,https://leetcode.com/problems/evaluate-division/,FALSE
+GRAPH,Medium,Accounts Merge,https://leetcode.com/problems/accounts-merge/,FALSE
+GRAPH,Medium,Network Delay Time,https://leetcode.com/problems/network-delay-time/,FALSE
+GRAPH,Medium,Find Eventual Safe States,https://leetcode.com/problems/find-eventual-safe-states/,FALSE
+GRAPH,Medium,Keys and Rooms,https://leetcode.com/problems/keys-and-rooms/,FALSE
+GRAPH,Medium,Possible Bipartition,https://leetcode.com/problems/possible-bipartition/,FALSE
+GRAPH,Medium,Most Stones Removed with Same Row or Column,https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/,FALSE
+GRAPH,Medium,Regions Cut by Slashes,https://leetcode.com/problems/regions-cut-by-slashes/,FALSE
+GRAPH,Medium,Satisfiability of Equality Equations,https://leetcode.com/problems/satisfiability-of-equality-equations/,FALSE
+GRAPH,Medium,As Far From Land As Possible,https://leetcode.com/problems/as-far-from-land-as-possible/,FALSE
+GRAPH,Medium,Number of Closed Islands,https://leetcode.com/problems/number-of-closed-islands/,FALSE
+GRAPH,Medium,Number of Operations to Make Network Connected,https://leetcode.com/problems/number-of-operations-to-make-network-connected/,FALSE
+GRAPH,Medium,Find the City With the Smallest Number of Neighbors at a Threshold Distance,https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/,FALSE
+GRAPH,Medium,Time Needed to Inform All Employees,https://leetcode.com/problems/time-needed-to-inform-all-employees/,FALSE
+Linked List,Easy,Delete Node in a Linked List,https://leetcode.com/problems/delete-node-in-a-linked-list/,TRUE
+Linked List,Easy,Middle of the Linked List,https://leetcode.com/problems/middle-of-the-linked-list/,TRUE
+Linked List,Easy,Convert Binary Number in a Linked List to Integer,https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/,TRUE
+Linked List,Easy,Design HashSet,https://leetcode.com/problems/design-hashset/,TRUE
+Linked List,Easy,Design HashMap,https://leetcode.com/problems/design-hashmap/,TRUE
+Linked List,Easy,Reverse Linked List,https://leetcode.com/problems/reverse-linked-list/,TRUE
+Linked List,Easy,Merge Two Sorted Lists,https://leetcode.com/problems/merge-two-sorted-lists/,TRUE
+Linked List,Easy,Remove Duplicates from Sorted List,https://leetcode.com/problems/remove-duplicates-from-sorted-list/,TRUE
+Linked List,Easy,Linked List Cycle,https://leetcode.com/problems/linked-list-cycle/,TRUE
+Linked List,Easy,Intersection of Two Linked Lists,https://leetcode.com/problems/intersection-of-two-linked-lists/,TRUE
+Linked List,Easy,Palindrome Linked List,https://leetcode.com/problems/palindrome-linked-list/,TRUE
+Linked List,Easy,Remove Linked List Elements,https://leetcode.com/problems/remove-linked-list-elements/,TRUE
+Linked List,Hard,Reverse Nodes in k-Group,https://leetcode.com/problems/reverse-nodes-in-k-group/,TRUE
+Linked List,Hard,Merge k Sorted Lists,https://leetcode.com/problems/merge-k-sorted-lists/,TRUE
+Linked List,Hard,Copy List with Random Pointer,https://leetcode.com/problems/copy-list-with-random-pointer/,TRUE
+Linked List,Medium,Linked List Cycle II,https://leetcode.com/problems/linked-list-cycle-ii/,TRUE
+Linked List,Medium,Design Browser History,https://leetcode.com/problems/design-browser-history/,TRUE
+Linked List,Medium,LRU Cache,https://leetcode.com/problems/lru-cache/,TRUE
+Heap,Medium,K Closest Points to Origin,https://leetcode.com/problems/k-closest-points-to-origin/,FALSE
+Heap,Medium,Kth Largest Element in an Array,https://leetcode.com/problems/kth-largest-element-in-an-array/,FALSE
+Heap,Medium,Reorganize String,https://leetcode.com/problems/reorganize-string/,FALSE
+Heap,Medium,Furthest Building You Can Reach,https://leetcode.com/problems/furthest-building-you-can-reach/,FALSE
+Heap,Medium,Kth Smallest Element in a Sorted Matrix,https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/,FALSE
+Heap,Medium,Cheapest Flights Within K Stops,https://leetcode.com/problems/cheapest-flights-within-k-stops/,FALSE
+Heap,Medium,Find the Most Competitive Subsequence,https://leetcode.com/problems/find-the-most-competitive-subsequence/,FALSE
+Heap,Medium,Ugly Number II,https://leetcode.com/problems/ugly-number-ii/,FALSE
+Heap,Hard,Merge k Sorted Lists,https://leetcode.com/problems/merge-k-sorted-lists/,FALSE
+Heap,Hard,Sliding Window Maximum,https://leetcode.com/problems/sliding-window-maximum/,FALSE
+Heap,Hard,The Skyline Problem,https://leetcode.com/problems/the-skyline-problem/,FALSE
+Heap,Hard,Trapping Rain Water II,https://leetcode.com/problems/trapping-rain-water-ii/,FALSE
+Heap,Hard,Minimum Number of Refueling Stops,https://leetcode.com/problems/minimum-number-of-refueling-stops/,FALSE
+Heap,Hard,Swim in Rising Water,https://leetcode.com/problems/swim-in-rising-water/,FALSE
+Heap,Hard,Shortest Path to Get All Keys,https://leetcode.com/problems/shortest-path-to-get-all-keys/,FALSE
+Heap,Hard,Minimum Cost to Hire K Workers,https://leetcode.com/problems/minimum-cost-to-hire-k-workers/,FALSE
+Heap,Hard,K-th Smallest Prime Fraction,https://leetcode.com/problems/k-th-smallest-prime-fraction/,FALSE
+Sliding Window,Medium/Hard,Longest Substring with At Least K Repeating Characters,https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/,FALSE
+Sliding Window,Medium/Hard,Max Consecutive Ones III,https://leetcode.com/problems/max-consecutive-ones-iii/,FALSE
+Sliding Window,Medium/Hard,Grumpy Bookstore Owner,https://leetcode.com/problems/grumpy-bookstore-owner/,FALSE
+Sliding Window,Hard,Sliding Window Median,https://leetcode.com/problems/sliding-window-median/,FALSE
