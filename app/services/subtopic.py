@@ -1,4 +1,5 @@
 """SubTopicService — business logic with cascade progress updates."""
+import json
 from typing import List
 from fastapi import HTTPException
 from app.repositories.subtopic import SubTopicRepository
@@ -26,6 +27,12 @@ class SubTopicService:
                 },
             )
         subtopic_data["topic_id"] = topic_id
+        # Serialize links list → JSON string for storage
+        if "links" in subtopic_data and subtopic_data["links"] is not None:
+            if isinstance(subtopic_data["links"], list):
+                subtopic_data["links"] = json.dumps(
+                    [lnk if isinstance(lnk, dict) else lnk.model_dump() for lnk in subtopic_data["links"]]
+                )
         st = self.repo.create(subtopic_data)
         self.topic_repo.update_progress_percentage(topic_id)
         return st
@@ -55,6 +62,18 @@ class SubTopicService:
         if not st:
             raise HTTPException(status_code=404, detail=self._not_found_resp("SubTopic", subtopic_id))
         self.topic_repo.update_progress_percentage(st.topic_id)
+        return st
+
+    def update_subtopic(self, subtopic_id: int, subtopic_data: dict):
+        # Serialize links list → JSON string for storage
+        if "links" in subtopic_data and subtopic_data["links"] is not None:
+            if isinstance(subtopic_data["links"], list):
+                subtopic_data["links"] = json.dumps(
+                    [lnk if isinstance(lnk, dict) else lnk.model_dump() for lnk in subtopic_data["links"]]
+                )
+        st = self.repo.update(subtopic_id, subtopic_data)
+        if not st:
+            raise HTTPException(status_code=404, detail=self._not_found_resp("SubTopic", subtopic_id))
         return st
 
     def delete_subtopic(self, subtopic_id: int) -> bool:

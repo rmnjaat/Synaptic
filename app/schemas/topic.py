@@ -47,6 +47,8 @@ class SubTopicRead(BaseModel):
     id: int
     topic_id: int
     name: str
+    description: Optional[str] = None
+    links: Optional[str] = None  # JSON string
     status: StatusEnum
     completed_at: Optional[datetime] = None
     order_index: int

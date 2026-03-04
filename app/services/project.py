@@ -17,6 +17,12 @@ class ProjectService:
             raise HTTPException(status_code=404, detail={"success": False, "message": f"Project {project_id} not found."})
         return project
 
+    def update_project(self, project_id: int, project_data: dict):
+        project = self.repo.update(project_id, project_data)
+        if not project:
+            raise HTTPException(status_code=404, detail={"success": False, "message": f"Project {project_id} not found."})
+        return project
+
     def add_topics(self, project_id: int, topic_ids: List[int]):
         project = self.repo.add_topics(project_id, topic_ids)
         if not project:
@@ -31,3 +37,8 @@ class ProjectService:
         if not project:
             raise HTTPException(status_code=404, detail={"success": False, "message": f"Project {project_id} not found."})
         return project
+
+    def delete_project(self, project_id: int):
+        if not self.repo.delete(project_id):
+            raise HTTPException(status_code=404, detail={"success": False, "message": f"Project {project_id} not found."})
+        return True

@@ -744,29 +744,96 @@
 
     /* ── SUBTOPIC LIST ── */
     .st-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
       background: var(--surface2);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 6px;
-      transition: .15s;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      transition: .18s;
+      overflow: hidden;
     }
 
     .st-row:hover {
       border-color: var(--border2);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .3);
+    }
+
+    .st-row.expanded {
+      border-color: var(--accent);
+      background: rgba(108, 99, 255, .04);
+    }
+
+    .st-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .st-chevron {
+      font-size: .65rem;
+      color: var(--text3);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+
+    .st-row.expanded .st-chevron {
+      transform: rotate(90deg);
+    }
+
+    .st-preview {
+      padding: 0 14px 12px 36px;
+      display: none;
+      animation: fadeDown .18s ease;
+    }
+
+    .st-row.expanded .st-preview {
+      display: block;
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .st-name {
       flex: 1;
-      font-size: .82rem;
+      font-size: .85rem;
+      font-weight: 600;
     }
 
     .st-actions {
       display: flex;
-      gap: 6px;
+      gap: 5px;
+    }
+
+    .st-link-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: rgba(108, 99, 255, .12);
+      border: 1px solid rgba(108, 99, 255, .22);
+      color: var(--accent2);
+      font-size: .7rem;
+      font-weight: 500;
+      text-decoration: none;
+      margin-right: 6px;
+      margin-top: 4px;
+      transition: .15s;
+    }
+
+    .st-link-chip:hover {
+      background: rgba(108, 99, 255, .25);
     }
 
     /* ── TOASTS ── */
@@ -906,6 +973,200 @@
         flex: none;
       }
     }
+
+    /* ── SEARCH OVERLAY ── */
+    #searchOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(8, 12, 20, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 2000;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 8vh;
+      animation: fadeIn .2s ease-out;
+    }
+
+    #searchOverlay.open {
+      display: flex;
+    }
+
+    .search-modal {
+      width: 100%;
+      max-width: 650px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      animation: modalSlide .25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .search-header {
+      padding: 16px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-input-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface3);
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      transition: .2s;
+    }
+
+    .search-input-wrap:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+    }
+
+    .search-input-wrap input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 1rem;
+      width: 100%;
+      font-weight: 500;
+    }
+
+    .search-results {
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .search-item {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: .15s;
+      margin-bottom: 2px;
+    }
+
+    .search-item:hover,
+    .search-item.selected {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .search-item.selected {
+      background: rgba(108, 99, 255, 0.1);
+      border-left: 3px solid var(--accent);
+      padding-left: 11px;
+    }
+
+    .search-item .item-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface3);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .search-item .item-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .search-item .item-title {
+      font-size: .9rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .search-item .item-meta {
+      font-size: .72rem;
+      color: var(--text3);
+      margin-top: 1px;
+    }
+
+    .search-item .item-shortcut {
+      font-size: .65rem;
+      color: var(--text3);
+      padding: 2px 6px;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      opacity: 0;
+      transition: .2s;
+    }
+
+    .search-item:hover .item-shortcut,
+    .search-item.selected .item-shortcut {
+      opacity: 1;
+    }
+
+    .search-footer {
+      padding: 12px 20px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 16px;
+      font-size: .7rem;
+      color: var(--text3);
+    }
+
+    .kbd-tip {
+      background: var(--surface2);
+      padding: 2px 5px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      margin-right: 4px;
+    }
+
+    .search-group-title {
+      font-size: .62rem;
+      font-weight: 800;
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: 14px 14px 6px;
+      opacity: 0.8;
+    }
   </style>
 </head>
 
@@ -948,13 +1209,6 @@
         </svg>
         Projects
       </div>
-      <div class="nav-item" onclick="navigate('search')" id="nav-search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8" />
-          <path d="M21 21l-4.35-4.35" />
-        </svg>
-        Search
-      </div>
     </nav>
     <div class="sidebar-footer"></div>
   </aside>
@@ -963,7 +1217,20 @@
   <div class="main">
     <div class="topbar">
       <h2 id="pageTitle">Dashboard</h2>
-      <div class="flex-gap" id="topbarActions"></div>
+      <div style="display:flex; align-items:center; gap:16px">
+        <button onclick="openSearch()"
+          style="background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px 16px; display:flex; align-items:center; gap:12px; color:var(--text2); font-size:.82rem; height:40px; cursor:pointer; width:220px; transition:.2s">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="width:16px; height:16px; opacity:.7">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <span style="opacity:.6; flex:1; text-align:left">Search everything...</span>
+          <kbd
+            style="background:var(--surface3); padding:2px 5px; border-radius:4px; font-size:10px; border:1px solid var(--border2); opacity:.8">⌘K</kbd>
+        </button>
+        <div class="flex-gap" id="topbarActions"></div>
+      </div>
     </div>
     <div class="content" id="content"></div>
   </div>
@@ -1064,15 +1331,54 @@
   </div>
 
   <div class="modal-overlay" id="subtopicModal">
-    <div class="modal">
-      <h3>➕ Add Sub-Topic</h3>
+    <div class="modal" style="width:520px">
+      <h3>➕ Add Sub-Task</h3>
       <div class="form-group">
-        <label class="form-label">Sub-Topic Name *</label>
+        <label class="form-label">Sub-Task Name *</label>
         <input id="stName" class="form-input" placeholder="e.g. Inorder Traversal" />
       </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="stDesc" class="form-textarea" placeholder="Key concepts, approach, notes..."></textarea>
+      </div>
+      <div class="form-group">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <label class="form-label" style="margin-bottom:0">Links</label>
+          <button class="btn btn-sm btn-outline" onclick="addLinkRow('stLinksContainer')"
+            style="padding:3px 10px;font-size:.72rem">+ Add Link</button>
+        </div>
+        <div id="stLinksContainer"></div>
+      </div>
       <div class="flex-gap">
-        <button class="btn btn-primary" onclick="createSubtopic()">Add Sub-Topic</button>
+        <button class="btn btn-primary" onclick="createSubtopic()">Add Sub-Task</button>
         <button class="btn btn-outline" onclick="closeModal('subtopicModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="editSubtopicModal">
+    <div class="modal" style="width:520px">
+      <h3>✏️ Edit Sub-Task</h3>
+      <input type="hidden" id="editStId" />
+      <div class="form-group">
+        <label class="form-label">Sub-Task Name *</label>
+        <input id="editStName" class="form-input" placeholder="e.g. Inorder Traversal" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="editStDesc" class="form-textarea" placeholder="Key concepts, approach, notes..."></textarea>
+      </div>
+      <div class="form-group">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <label class="form-label" style="margin-bottom:0">Links</label>
+          <button class="btn btn-sm btn-outline" onclick="addLinkRow('editLinksContainer')"
+            style="padding:3px 10px;font-size:.72rem">+ Add Link</button>
+        </div>
+        <div id="editLinksContainer"></div>
+      </div>
+      <div class="flex-gap">
+        <button class="btn btn-primary" onclick="updateSubtopic()">Save Changes</button>
+        <button class="btn btn-outline" onclick="closeModal('editSubtopicModal')">Cancel</button>
       </div>
     </div>
   </div>
@@ -1114,6 +1420,44 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="editProjectModal">
+    <div class="modal">
+      <h3>✏️ Edit Project</h3>
+      <input type="hidden" id="editPId" />
+      <div class="form-group">
+        <label class="form-label">Project Name *</label>
+        <input id="editPName" class="form-input" placeholder="e.g. Algorithm Visualizer" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="editPDesc" class="form-textarea" placeholder="What are you building?"></textarea>
+      </div>
+      <div class="grid2">
+        <div class="form-group">
+          <label class="form-label">Tech Stack</label>
+          <input id="editPTech" class="form-input" placeholder="React, FastAPI..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select id="editPStatus" class="form-select">
+            <option value="planning">Planning</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="on-hold">On Hold</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">GitHub URL</label>
+        <input id="editPGithub" class="form-input" placeholder="https://github.com/..." />
+      </div>
+      <div class="flex-gap">
+        <button class="btn btn-primary" onclick="updateProject()">Save Changes</button>
+        <button class="btn btn-outline" onclick="closeModal('editProjectModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast-container"></div>
 
   <script>
@@ -1127,6 +1471,8 @@
     let currentPage = 'dashboard';
     let selectedTopic = null;
     let selectedTopicForST = null;
+    const _stCache = {}; // id → subtopic object, avoids JSON-in-HTML-attribute
+    const _pCache = {};  // id → project object
 
 
     const CATEGORIES = {
@@ -1297,13 +1643,13 @@
       currentPage = page;
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById('nav-' + page)?.classList.add('active');
-      const titles = { dashboard: 'Dashboard', topics: 'Topics', projects: 'Projects', search: 'Global Search' };
+      const titles = { dashboard: 'Dashboard', topics: 'Topics', projects: 'Projects' };
       document.getElementById('pageTitle').textContent = titles[page] || page;
       const actions = document.getElementById('topbarActions');
       actions.innerHTML = '';
       if (page === 'topics') actions.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openModal('topicModal')">+ New Topic</button>`;
       if (page === 'projects') actions.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openModal('projectModal')">+ New Project</button>`;
-      const views = { dashboard: renderDashboard, topics: renderTopics, projects: renderProjects, search: renderSearch };
+      const views = { dashboard: renderDashboard, topics: renderTopics, projects: renderProjects };
       (views[page] || (() => { }))();
     }
 
@@ -1405,17 +1751,35 @@
       const res = await api('GET', `/topics/${id}`);
       if (!res || !res.success) return `<div class="empty">Could not load topic.</div>`;
       const t = res.data;
-      const stRows = (t.subtopics || []).map(s => `
+      const stRows = (t.subtopics || []).map(s => {
+        // store subtopic data globally so buttons can access it without JSON-in-html
+        _stCache[s.id] = s;
+        const links = parseLinks(s.links);
+        const linksHTML = links.map(l =>
+          `<a href="${l.url}" target="_blank" class="st-link-chip">🔗 ${l.label || 'Link'}</a>`
+        ).join('');
+        const hasDetail = s.description || links.length > 0;
+        return `
     <div class="st-row" id="str-${s.id}">
-      <div class="st-name">${s.name}</div>
-      ${statusBadge(s.status)}
-      <div class="st-actions">
-        <button class="btn btn-sm btn-success btn-icon" title="Complete" onclick="markST(${s.id},'completed')">✓</button>
-        <button class="btn btn-sm btn-warn btn-icon" title="In Progress" onclick="markST(${s.id},'in-progress')">▶</button>
-        <button class="btn btn-sm btn-outline btn-icon" title="Reset" onclick="markST(${s.id},'to-learn')">↺</button>
-        <button class="btn btn-sm btn-danger btn-icon" title="Delete" onclick="deleteST(${s.id})">✕</button>
+      <div class="st-header" onclick="toggleST(${s.id})">
+        <span class="st-chevron">▶</span>
+        <div class="st-name">${s.name}</div>
+        ${statusBadge(s.status)}
+        <div class="st-actions" onclick="event.stopPropagation()">
+          <button class="btn btn-sm btn-outline btn-icon" title="Edit" onclick="openEditSTModal(${s.id})">✎</button>
+          <button class="btn btn-sm btn-success btn-icon" title="Complete" onclick="markST(${s.id},'completed')">✓</button>
+          <button class="btn btn-sm btn-warn btn-icon" title="In Progress" onclick="markST(${s.id},'in-progress')">▶</button>
+          <button class="btn btn-sm btn-outline btn-icon" title="Reset" onclick="markST(${s.id},'to-learn')">↺</button>
+          <button class="btn btn-sm btn-danger btn-icon" title="Delete" onclick="deleteST(${s.id})">✕</button>
+        </div>
       </div>
-    </div>`).join('');
+      ${hasDetail ? `
+      <div class="st-preview">
+        ${s.description ? `<div style="font-size:.78rem;color:var(--text2);line-height:1.5;margin-bottom:${links.length ? '10px' : '0'}">${s.description}</div>` : ''}
+        ${links.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${linksHTML}</div>` : ''}
+      </div>` : ''}
+    </div>`;
+      }).join('');
       const notes = (t.notes || []).map(n => `<div class="card-sm" style="margin-bottom:8px"><div style="font-size:.82rem;font-weight:600">${n.title}</div></div>`).join('');
       // ── Date meta row ──────────────────────────────────────────────────────
       const dateMeta = `
@@ -1456,25 +1820,108 @@
     ${dateMeta}
   </div>
   <div class="section-header">
-    <div class="section-title">Sub-Topics (${(t.subtopics || []).length})</div>
+    <div class="section-title">Sub-Tasks (${(t.subtopics || []).length})</div>
     <button class="btn btn-sm btn-outline" onclick="openSTModal(${t.id})">+ Add</button>
   </div>
-  ${stRows || `<div class="empty" style="padding:24px">No sub-topics yet</div>`}
+  ${stRows || `<div class="empty" style="padding:24px">No sub-tasks yet</div>`}
   ${notes ? `<div class="section-header" style="margin-top:20px"><div class="section-title">Notes</div></div>${notes}` : ''}`;
     }
 
-    function openSTModal(topicId) { selectedTopicForST = topicId; openModal('subtopicModal'); }
+    function openSTModal(topicId) {
+      selectedTopicForST = topicId;
+      document.getElementById('stLinksContainer').innerHTML = '';
+      openModal('subtopicModal');
+    }
 
+    // ── Link row helpers ─────────────────────────────────────────────────────
+    function addLinkRow(containerId, label = '', url = '') {
+      const c = document.getElementById(containerId);
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;align-items:center';
+      row.innerHTML = `
+        <input class="form-input" placeholder="Label (e.g. LeetCode, Notes)" value="${label}" style="flex:0 0 38%" />
+        <input class="form-input" placeholder="URL" value="${url}" style="flex:1" />
+        <button class="btn btn-sm btn-danger btn-icon" onclick="this.closest('div').remove()" style="flex-shrink:0">✕</button>`;
+      c.appendChild(row);
+    }
+
+    function getLinksFromContainer(containerId) {
+      const rows = document.getElementById(containerId).querySelectorAll('div');
+      const links = [];
+      rows.forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const label = inputs[0]?.value.trim();
+        const url = inputs[1]?.value.trim();
+        if (url) links.push({ label: label || 'Link', url });
+      });
+      return links;
+    }
+
+    function parseLinks(raw) {
+      if (!raw) return [];
+      try { return JSON.parse(raw); } catch { return []; }
+    }
+
+    // ── Create subtopic ──────────────────────────────────────────────────────
     async function createSubtopic() {
       const name = document.getElementById('stName').value.trim();
+      const desc = document.getElementById('stDesc').value.trim();
+      const links = getLinksFromContainer('stLinksContainer');
       if (!name) return toast('Name required', 'error');
-      const res = await api('POST', `/topics/${selectedTopicForST}/subtopics/create`, { name });
+      const res = await api('POST', `/topics/${selectedTopicForST}/subtopics/create`, {
+        name,
+        description: desc || undefined,
+        links: links.length ? links : undefined
+      });
       if (!res) return;
       if (!res.success) { toast(res.message || 'Error', 'error'); return; }
-      toast('Sub-topic added!', 'success');
+      toast('Sub-task added!', 'success');
       document.getElementById('stName').value = '';
+      document.getElementById('stDesc').value = '';
+      document.getElementById('stLinksContainer').innerHTML = '';
       closeModal('subtopicModal');
       selectTopic(selectedTopicForST);
+    }
+
+    // ── Edit subtopic ────────────────────────────────────────────────────────
+    function openEditSTModal(stId) {
+      const s = _stCache[stId];
+      if (!s) return toast('Could not find sub-task data', 'error');
+
+      openModal('editSubtopicModal');
+
+      document.getElementById('editStId').value = s.id;
+      document.getElementById('editStName').value = s.name;
+      document.getElementById('editStDesc').value = s.description || '';
+
+      // Populate links
+      const container = document.getElementById('editLinksContainer');
+      container.innerHTML = '';
+      const existingLinks = parseLinks(s.links);
+      existingLinks.forEach(l => addLinkRow('editLinksContainer', l.label, l.url));
+    }
+
+    async function updateSubtopic() {
+      const id = document.getElementById('editStId').value;
+      const name = document.getElementById('editStName').value.trim();
+      const desc = document.getElementById('editStDesc').value.trim();
+      const links = getLinksFromContainer('editLinksContainer');
+      if (!name) return toast('Name required', 'error');
+      const res = await api('PATCH', `/subtopics/${id}`, {
+        name,
+        description: desc || null,
+        links: links.length ? links : null
+      });
+      if (!res) return;
+      if (!res.success) { toast(res.message || 'Error', 'error'); return; }
+      toast('Sub-task updated!', 'success');
+      closeModal('editSubtopicModal');
+      renderTopics();
+    }
+
+    function toggleST(id) {
+      const row = document.getElementById('str-' + id);
+      if (row) row.classList.toggle('expanded');
     }
 
     async function markST(id, status) {
@@ -1538,11 +1985,16 @@
         c.innerHTML = `<div class="empty"><div style="font-size:3rem;margin-bottom:12px">🚀</div><div>No projects yet</div><button class="btn btn-primary" style="margin-top:16px" onclick="openModal('projectModal')">Create First Project</button></div>`;
         return;
       }
-      const cards = projects.map(p => `
-  <div class="project-card-compact">
+      const cards = projects.map(p => {
+        _pCache[p.id] = p;
+        return `
+  <div class="project-card-compact" onclick="openEditProjectModal(${p.id})" style="cursor:pointer">
     <div class="flex-gap" style="justify-content:space-between; margin-bottom:4px">
       <div class="p-title">🚀 ${p.name}</div>
-      ${projectBadge(p.status)}
+      <div style="display:flex; gap:8px; align-items:center">
+        ${projectBadge(p.status)}
+        <button class="btn btn-xs btn-outline btn-icon" style="padding:2px; width:24px; height:24px" onclick="event.stopPropagation(); openEditProjectModal(${p.id})">✎</button>
+      </div>
     </div>
     
     <div class="p-desc">${p.description || 'No description provided.'}</div>
@@ -1560,11 +2012,15 @@
 
     ${p.tech_stack ? `<div style="font-size:.68rem; color:var(--accent2); margin-top:-4px">🛠 ${p.tech_stack}</div>` : ''}
       
-    <div class="flex-gap" style="margin-top:8px; justify-content:space-between">
-      ${p.github_url ? `<a href="${p.github_url}" target="_blank" style="color:var(--info); font-size:.7rem; text-decoration:none"># GitHub</a>` : '<div></div>'}
-      ${p.status !== 'completed' ? `<button class="btn btn-xs btn-success" style="padding:4px 10px; font-size:.68rem" onclick="markProjectDone(${p.id})">Done</button>` : ''}
+    <div class="flex-gap" style="margin-top:12px; justify-content:space-between">
+      ${p.github_url ? `<a href="${p.github_url}" target="_blank" onclick="event.stopPropagation()" style="color:var(--info); font-size:.7rem; text-decoration:none"># GitHub</a>` : '<div></div>'}
+      <div style="display:flex; gap:6px">
+        ${p.status !== 'completed' ? `<button class="btn btn-xs btn-success" style="padding:4px 10px; font-size:.68rem" onclick="event.stopPropagation(); markProjectDone(${p.id})">Done</button>` : ''}
+        <button class="btn btn-xs btn-danger" style="padding:4px 10px; font-size:.68rem" onclick="event.stopPropagation(); deleteProject(${p.id})">✕</button>
+      </div>
     </div>
-  </div>`).join('');
+  </div>`;
+      }).join('');
       c.innerHTML = `
       <div style="flex:1; overflow-y:auto; padding:28px 32px;">
         <div class="project-grid">${cards}</div>
@@ -1598,40 +2054,141 @@
       renderProjects();
     }
 
-    // ── SEARCH ───────────────────────────────────────────────────────────────────
-    function renderSearch() {
-      const c = document.getElementById('content');
-      c.innerHTML = `
-  <div style="flex:1; overflow-y:auto; padding:32px;">
-    <div style="max-width:740px">
-      <div class="search-wrap" style="margin-bottom:24px">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input id="searchQ" class="form-input" placeholder="Search topics, subtopics, notes, projects..." onkeydown="if(event.key==='Enter')doSearch()" style="font-size:.95rem;padding:14px 14px 14px 42px"/>
-      </div>
-      <div id="searchResults"></div>
-    </div>
-  </div>`;
+    function openEditProjectModal(id) {
+      const p = _pCache[id];
+      if (!p) return toast('Project not found in cache', 'error');
+      openModal('editProjectModal');
+      document.getElementById('editPId').value = p.id;
+      document.getElementById('editPName').value = p.name;
+      document.getElementById('editPDesc').value = p.description || '';
+      document.getElementById('editPTech').value = p.tech_stack || '';
+      document.getElementById('editPGithub').value = p.github_url || '';
+      document.getElementById('editPStatus').value = p.status;
     }
 
-    async function doSearch() {
+    async function updateProject() {
+      const id = document.getElementById('editPId').value;
+      const body = {
+        name: document.getElementById('editPName').value.trim(),
+        description: document.getElementById('editPDesc').value.trim() || null,
+        tech_stack: document.getElementById('editPTech').value.trim() || null,
+        github_url: document.getElementById('editPGithub').value.trim() || null,
+        status: document.getElementById('editPStatus').value,
+      };
+      if (!body.name) return toast('Name required', 'error');
+      const res = await api('PATCH', `/projects/${id}`, body);
+      if (!res || !res.success) { toast(res?.message || 'Error', 'error'); return; }
+      toast('Project updated!', 'success');
+      closeModal('editProjectModal');
+      renderProjects();
+    }
+
+    async function deleteProject(id) {
+      if (!confirm('Delete this project?')) return;
+      const res = await api('DELETE', `/projects/${id}`);
+      if (!res || !res.success) { toast(res?.message || 'Error', 'error'); return; }
+      toast('Project deleted', 'success');
+      renderProjects();
+    }
+
+    // ── GLOBAL SEARCH DROPDOWN ──
+    let searchSelectedIndex = -1;
+
+    function openSearch() {
       if (!requireUser()) return;
-      const q = document.getElementById('searchQ').value.trim();
-      if (q.length < 2) return toast('Type at least 2 characters', 'error');
-      document.getElementById('searchResults').innerHTML = `<div style="color:var(--text3)">Searching...</div>`;
-      const res = await api('GET', `/search/global?user_id=${userId}&q=${encodeURIComponent(q)}`);
-      if (!res || !res.success) { document.getElementById('searchResults').innerHTML = `<div class="empty">Search failed.</div>`; return; }
-      const { total_count, topics, sub_topics, notes, projects, query } = res.data;
-      let html = `<div style="font-size:.8rem;color:var(--text3);margin-bottom:20px">${total_count} result(s) for "<b style="color:var(--text)">${query}</b>"</div>`;
-      if (topics.length) html += renderGroup('📚 Topics', topics.map(t => `<div class="card-sm" style="margin-bottom:8px;cursor:pointer" onclick="navigate('topics')"><div style="font-size:.85rem;font-weight:600">${t.name}</div><div style="font-size:.72rem;color:var(--text3);margin-top:3px">${t.category}</div></div>`).join(''));
-      if (sub_topics.length) html += renderGroup('📌 Sub-Topics', sub_topics.map(s => `<div class="card-sm" style="margin-bottom:8px"><div style="font-size:.85rem;font-weight:600">${s.name}</div></div>`).join(''));
-      if (notes.length) html += renderGroup('📝 Notes', notes.map(n => `<div class="card-sm" style="margin-bottom:8px"><div style="font-size:.85rem;font-weight:600">${n.title}</div></div>`).join(''));
-      if (projects.length) html += renderGroup('🚀 Projects', projects.map(p => `<div class="card-sm" style="margin-bottom:8px"><div style="font-size:.85rem;font-weight:600">${p.name}</div>${p.description ? `<div style="font-size:.72rem;color:var(--text3)">${p.description}</div>` : ''}</div>`).join(''));
-      if (!total_count) html += `<div class="empty" style="padding:40px">No results found.</div>`;
-      document.getElementById('searchResults').innerHTML = html;
+      document.getElementById('searchOverlay').classList.add('open');
+      document.getElementById('globalSearchInput').focus();
+      document.getElementById('globalSearchInput').value = '';
+      document.getElementById('globalSearchResults').innerHTML = '<div class="search-empty">⚡ Search topics, projects, notes...</div>';
+      searchSelectedIndex = -1;
     }
 
-    function renderGroup(title, content) {
-      return `<div style="margin-bottom:20px"><div class="section-title" style="margin-bottom:12px">${title}</div>${content}</div>`;
+    function closeSearch() {
+      document.getElementById('searchOverlay').classList.remove('open');
+    }
+
+    let searchTimeout;
+    async function handleSearchInput(q) {
+      clearTimeout(searchTimeout);
+      const results = document.getElementById('globalSearchResults');
+      if (q.length < 2) {
+        results.innerHTML = '<div class="search-empty">⚡ Search topics, projects, notes...</div>';
+        return;
+      }
+      searchTimeout = setTimeout(async () => {
+        results.innerHTML = '<div class="search-empty">Searching...</div>';
+        const res = await api('GET', `/search/global?user_id=${userId}&q=${encodeURIComponent(q)}`);
+        if (!res || !res.success) return;
+        renderSearchDropdown(res.data);
+      }, 300);
+    }
+
+    function renderSearchDropdown(data) {
+      const { topics, sub_topics, notes, projects, total_count } = data;
+      const results = document.getElementById('globalSearchResults');
+      if (!total_count) {
+        results.innerHTML = '<div class="search-empty">No matching records found</div>';
+        return;
+      }
+
+      let html = '';
+      const addItem = (item, type, icon, meta, onclick) => {
+        return `<div class="search-item" data-type="${type}" onclick="${onclick}">
+          <div class="item-icon">${icon}</div>
+          <div class="item-info">
+            <div class="item-title">${item.name || item.title}</div>
+            <div class="item-meta">${meta}</div>
+          </div>
+          <div class="item-shortcut">Enter</div>
+        </div>`;
+      };
+
+      if (topics.length) {
+        html += '<div class="search-group-title">Topics</div>';
+        topics.forEach(t => html += addItem(t, 'topic', '📚', t.category, `navigate('topics'); closeSearch();`));
+      }
+      if (projects.length) {
+        html += '<div class="search-group-title">Projects</div>';
+        projects.forEach(p => html += addItem(p, 'project', '🚀', p.tech_stack || 'Project', `navigate('projects'); closeSearch();`));
+      }
+      if (sub_topics.length) {
+        html += '<div class="search-group-title">Sub-Tasks</div>';
+        sub_topics.forEach(s => html += addItem(s, 'sub_topic', '📌', 'Sub-task', `navigate('topics'); closeSearch();`));
+      }
+      if (notes.length) {
+        html += '<div class="search-group-title">Notes</div>';
+        notes.forEach(n => html += addItem(n, 'note', '📝', 'Note', `navigate('topics'); closeSearch();`));
+      }
+
+      results.innerHTML = html;
+      searchSelectedIndex = -1;
+    }
+
+    document.addEventListener('keydown', e => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') { e.preventDefault(); openSearch(); }
+      if (e.key === 'Escape') closeSearch();
+
+      const overlay = document.getElementById('searchOverlay');
+      if (overlay.classList.contains('open')) {
+        const items = overlay.querySelectorAll('.search-item');
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          searchSelectedIndex = Math.min(searchSelectedIndex + 1, items.length - 1);
+          updateSearchSelection(items);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          searchSelectedIndex = Math.max(searchSelectedIndex - 1, 0);
+          updateSearchSelection(items);
+        } else if (e.key === 'Enter' && searchSelectedIndex > -1) {
+          items[searchSelectedIndex].click();
+        }
+      }
+    });
+
+    function updateSearchSelection(items) {
+      items.forEach((it, idx) => it.classList.toggle('selected', idx === searchSelectedIndex));
+      if (searchSelectedIndex > -1) items[searchSelectedIndex].scrollIntoView({ block: 'nearest' });
     }
 
     // ── BADGES ───────────────────────────────────────────────────────────────────
@@ -1688,6 +2245,28 @@
     updateUserChip();
     navigate('dashboard');
   </script>
+  <div id="searchOverlay" onclick="if(event.target===this)closeSearch()">
+    <div class="search-modal">
+      <div class="search-header">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="width:18px; height:18px; opacity:.7">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input id="globalSearchInput" placeholder="Search anything (topics, projects, notes...)"
+            oninput="handleSearchInput(this.value)" autocomplete="off" />
+        </div>
+        <button class="btn btn-xs btn-outline" onclick="closeSearch()">Esc</button>
+      </div>
+      <div class="search-results" id="globalSearchResults"></div>
+      <div class="search-footer">
+        <span><kbd class="kbd-tip">↑↓</kbd> to navigate</span>
+        <span><kbd class="kbd-tip">↵</kbd> to select</span>
+        <span><kbd class="kbd-tip">Esc</kbd> to close</span>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

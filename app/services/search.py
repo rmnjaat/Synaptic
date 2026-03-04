@@ -45,7 +45,12 @@ class SearchService:
             for n in raw.get("notes", [])
         ]
         projects = [
-            ProjectSearchResult(id=p.id, name=p.name, description=p.description)
+            ProjectSearchResult(
+                id=p.id,
+                name=p.name,
+                description=p.description,
+                tech_stack=p.tech_stack,
+            )
             for p in raw.get("projects", [])
         ]
         total = len(topics) + len(sub_topics) + len(notes) + len(projects)

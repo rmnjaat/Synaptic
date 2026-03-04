@@ -1,6 +1,6 @@
 """SubTopics router — nested under topics and standalone."""
 from fastapi import APIRouter, Depends, status
-from app.schemas.subtopic import SubTopicCreate, SubTopicRead
+from app.schemas.subtopic import SubTopicCreate, SubTopicRead, SubTopicUpdate
 from app.schemas.common import APIResponse
 from app.services.subtopic import SubTopicService
 from app.dependencies import get_subtopic_service
@@ -50,6 +50,17 @@ def mark_subtopic_to_learn(subtopic_id: int, svc: SubTopicService = Depends(get_
     """Reset a sub-topic status to to-learn."""
     st = svc.mark_to_learn(subtopic_id)
     return APIResponse.ok(data=SubTopicRead.model_validate(st), message="SubTopic marked as to-learn.")
+
+
+@router.patch("/subtopics/{subtopic_id}", response_model=APIResponse[SubTopicRead])
+def update_subtopic(
+    subtopic_id: int,
+    payload: SubTopicUpdate,
+    svc: SubTopicService = Depends(get_subtopic_service),
+):
+    """Update a sub-topic's details."""
+    st = svc.update_subtopic(subtopic_id, payload.model_dump(exclude_unset=True))
+    return APIResponse.ok(data=SubTopicRead.model_validate(st), message="SubTopic updated.")
 
 
 @router.delete("/subtopics/{subtopic_id}", response_model=APIResponse[None])

@@ -21,6 +21,17 @@ def get_project(project_id: int, svc: ProjectService = Depends(get_project_servi
     return APIResponse.ok(data=ProjectRead.model_validate(project))
 
 
+@router.patch("/{project_id}", response_model=APIResponse[ProjectRead])
+def update_project(
+    project_id: int,
+    payload: ProjectUpdate,
+    svc: ProjectService = Depends(get_project_service),
+):
+    """Update a project's details."""
+    project = svc.update_project(project_id, payload.model_dump(exclude_unset=True))
+    return APIResponse.ok(data=ProjectRead.model_validate(project), message="Project updated.")
+
+
 @router.post("/{project_id}/mark-completed", response_model=APIResponse[ProjectRead])
 def mark_project_completed(project_id: int, svc: ProjectService = Depends(get_project_service)):
     project = svc.mark_completed(project_id)
@@ -35,3 +46,9 @@ def add_topics_to_project(
 ):
     project = svc.add_topics(project_id, payload.topic_ids)
     return APIResponse.ok(data=ProjectRead.model_validate(project), message="Topics added to project.")
+
+
+@router.delete("/{project_id}", response_model=APIResponse[None])
+def delete_project(project_id: int, svc: ProjectService = Depends(get_project_service)):
+    svc.delete_project(project_id)
+    return APIResponse.ok(message="Project deleted.")

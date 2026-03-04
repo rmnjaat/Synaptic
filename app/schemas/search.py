@@ -29,6 +29,7 @@ class ProjectSearchResult(BaseModel):
     type: str = "project"
     name: str
     description: Optional[str] = None
+    tech_stack: Optional[str] = None
 
 
 class SearchResponse(BaseModel):
