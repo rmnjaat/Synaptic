@@ -1742,14 +1742,16 @@
         listHTML += `<div style="margin-bottom:8px;padding:8px 12px;background:var(--surface2);border-radius:8px;font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">${info.icon} ${info.name}</div>`;
         topics.forEach(t => {
           const sel = selectedTopic?.id === t.id;
-          listHTML += `<div class="topic-card ${sel ? 'active-card' : ''}" id="tc-${t.id}" onclick="selectTopic(${t.id})">
+          const total = (t.subtopics || []).length;
+        const done = (t.subtopics || []).filter(s => s.status === 'completed').length;
+        listHTML += `<div class="topic-card ${sel ? 'active-card' : ''}" id="tc-${t.id}" onclick="selectTopic(${t.id})">
         <div class="flex-gap" style="justify-content:space-between">
           <div class="topic-title">${t.name}</div>
           ${statusBadge(t.status)}
         </div>
         ${t.description ? `<div class="topic-desc">${t.description}</div>` : ''}
         <div class="progress-bar"><div class="progress-bar-fill" style="width:${t.progress_percentage}%"></div></div>
-        <div style="font-size:.68rem;color:var(--text3);margin-top:4px">${t.progress_percentage}% complete</div>
+        <div class="topic-progress-text" style="font-size:.68rem;color:var(--text3);margin-top:4px">${t.progress_percentage}% · ${done}/${total} done</div>
       </div>`;
         });
       }
@@ -1824,7 +1826,7 @@
       ${statusBadge(t.status)}
     </div>
     <div class="progress-bar-wrap">
-      <div class="progress-bar-label"><span>Progress</span><span>${t.progress_percentage}%</span></div>
+      <div class="progress-bar-label"><span>Progress</span><span>${t.progress_percentage}% · ${(t.subtopics||[]).filter(s=>s.status==='completed').length}/${(t.subtopics||[]).length} done</span></div>
       <div class="progress-bar"><div class="progress-bar-fill" style="width:${t.progress_percentage}%"></div></div>
     </div>
     <div class="flex-gap" style="margin-top:16px;flex-wrap:wrap">
@@ -1835,7 +1837,7 @@
     ${dateMeta}
   </div>
   <div class="section-header">
-    <div class="section-title">Sub-Tasks (${(t.subtopics || []).length})</div>
+    <div class="section-title">Sub-Tasks · ${(t.subtopics || []).filter(s => s.status === 'completed').length}/${(t.subtopics || []).length} done</div>
     <button class="btn btn-sm btn-outline" onclick="openSTModal(${t.id})">+ Add</button>
   </div>
   ${stRows || `<div class="empty" style="padding:24px">No sub-tasks yet</div>`}
@@ -1895,7 +1897,7 @@
       document.getElementById('stDesc').value = '';
       document.getElementById('stLinksContainer').innerHTML = '';
       closeModal('subtopicModal');
-      selectTopic(selectedTopicForST);
+      refreshTopicDetail();
     }
 
     // ── Edit subtopic ────────────────────────────────────────────────────────
@@ -1931,12 +1933,34 @@
       if (!res.success) { toast(res.message || 'Error', 'error'); return; }
       toast('Sub-task updated!', 'success');
       closeModal('editSubtopicModal');
-      renderTopics();
+      refreshTopicDetail();
     }
 
     function toggleST(id) {
       const row = document.getElementById('str-' + id);
       if (row) row.classList.toggle('expanded');
+    }
+
+    async function refreshTopicDetail() {
+      if (!selectedTopic) return;
+      const detailEl = document.getElementById('topicDetail');
+      if (!detailEl) return;
+      const scrollPos = detailEl.scrollTop;
+      detailEl.innerHTML = await topicDetailHTML(selectedTopic.id);
+      detailEl.scrollTop = scrollPos;
+      // Also update the topic card in the left list (progress, status)
+      const res = await api('GET', `/topics/${selectedTopic.id}`);
+      if (res?.success) {
+        const t = res.data;
+        const card = document.getElementById('tc-' + t.id);
+        if (card) {
+          const total = (t.subtopics || []).length;
+          const done = (t.subtopics || []).filter(s => s.status === 'completed').length;
+          card.querySelector('.progress-bar-fill').style.width = t.progress_percentage + '%';
+          card.querySelector('.topic-progress-text').textContent = `${t.progress_percentage}% · ${done}/${total} done`;
+          card.querySelector('.status-badge')?.replaceWith(Object.assign(document.createElement('span'), { innerHTML: statusBadge(t.status) }).firstElementChild);
+        }
+      }
     }
 
     async function markST(id, status) {
@@ -1945,14 +1969,14 @@
       if (!res) return;
       if (!res.success) { toast(res.message, 'error'); return; }
       toast(`Marked ${status}`, 'success');
-      renderTopics();
+      refreshTopicDetail();
     }
 
     async function deleteST(id) {
       if (!confirm('Delete this sub-topic?')) return;
       await api('DELETE', `/subtopics/${id}`);
       toast('Deleted', 'success');
-      renderTopics();
+      refreshTopicDetail();
     }
 
     async function markTopic(id, status) {
@@ -1960,7 +1984,7 @@
       const res = await api('POST', `/topics/${id}/${ep}`);
       if (!res || !res.success) { toast(res?.message || 'Error', 'error'); return; }
       toast(`Topic marked ${status}`, 'success');
-      renderTopics();
+      refreshTopicDetail();
     }
 
     async function createTopic() {
