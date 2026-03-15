@@ -71,12 +71,17 @@ class GDriveSyncService:
 
         # 1. Try OAuth2 (Perfect for Personal Gmail)
         if os.path.exists(TOKEN_PATH):
-            self.creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
-            if self.creds and self.creds.expired and self.creds.refresh_token:
-                self.creds.refresh(Request())
-                with open(TOKEN_PATH, "w") as token:
-                    token.write(self.creds.to_json())
-            
+            try:
+                self.creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
+                if self.creds and self.creds.expired and self.creds.refresh_token:
+                    self.creds.refresh(Request())
+                    with open(TOKEN_PATH, "w") as token:
+                        token.write(self.creds.to_json())
+            except Exception as e:
+                logger.error("OAuth2 token refresh failed: %s — GDrive sync disabled. "
+                             "Re-generate token.json or switch to a Service Account.", e)
+                self.creds = None
+
             if self.creds:
                 self.service = build("drive", "v3", credentials=self.creds)
                 logger.info("Sync initialized (OAuth2/User Account).")

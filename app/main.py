@@ -48,7 +48,10 @@ async def lifespan(app: FastAPI):
     logger.info("Database schema created.")
     
     # Start Google Drive Background Sync (if credentials exist)
-    start_gdrive_sync()
+    try:
+        start_gdrive_sync()
+    except Exception as e:
+        logger.error("GDrive sync failed to start: %s — app will continue without sync.", e)
     
     yield
     logger.info("Shutting down Learning Tracker API.")
