@@ -52,7 +52,7 @@ def mark_modified():
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 GDRIVE_FOLDER_ID = os.getenv("GDRIVE_FOLDER_ID")
 SYNC_INTERVAL_SECONDS = int(os.getenv("GDRIVE_SYNC_INTERVAL", "300"))
-SCOPES = ["https://www.googleapis.com/auth/drive.file"]
+SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 TOKEN_PATH = "token.json"
 CREDS_PATH = "credentials.json"
