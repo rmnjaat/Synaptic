@@ -12,7 +12,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./token.json:/app/token.json:rw
       - ./credentials.json:/app/credentials.json:ro
       - ./.env:/app/.env:ro
     restart: unless-stopped

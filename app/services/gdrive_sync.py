@@ -41,12 +41,22 @@ logger.addHandler(file_handler)
 _HAS_CHANGES = False
 _sync_lock = threading.Lock()
 
+# Global reference so the manual sync endpoint can trigger it
+_sync_service: "GDriveSyncService | None" = None
+
 def mark_modified():
     """Call this whenever data is created/updated/deleted in the DB."""
     global _HAS_CHANGES
     with _sync_lock:
         _HAS_CHANGES = True
     logger.debug("Database marked as modified. Pending sync.")
+
+def trigger_manual_sync():
+    """Immediately run a full sync (called from the API endpoint)."""
+    if _sync_service and _sync_service.service:
+        _sync_service.sync_all_tables()
+        return True
+    return False
 
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
@@ -64,30 +74,12 @@ class GDriveSyncService:
         self._init_client()
 
     def _init_client(self):
-        """Initialize GDrive API client using token.json (OAuth2) or Service Account."""
+        """Initialize GDrive API client using Service Account (preferred) or OAuth2 fallback."""
         if not GDRIVE_FOLDER_ID:
             logger.warning("GDRIVE_FOLDER_ID not set. Sync disabled.")
             return
 
-        # 1. Try OAuth2 (Perfect for Personal Gmail)
-        if os.path.exists(TOKEN_PATH):
-            try:
-                self.creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
-                if self.creds and self.creds.expired and self.creds.refresh_token:
-                    self.creds.refresh(Request())
-                    with open(TOKEN_PATH, "w") as token:
-                        token.write(self.creds.to_json())
-            except Exception as e:
-                logger.error("OAuth2 token refresh failed: %s — GDrive sync disabled. "
-                             "Re-generate token.json or switch to a Service Account.", e)
-                self.creds = None
-
-            if self.creds:
-                self.service = build("drive", "v3", credentials=self.creds)
-                logger.info("Sync initialized (OAuth2/User Account).")
-                return
-
-        # 2. Fallback to Service Account (Keeping old logic just in case)
+        # 1. Prefer Service Account (from .env GDRIVE_SERVICE_ACCOUNT_JSON)
         sa_json = os.getenv("GDRIVE_SERVICE_ACCOUNT_JSON")
         if sa_json:
             try:
@@ -103,7 +95,24 @@ class GDriveSyncService:
             except Exception as e:
                 logger.error(f"Service account login failed: {e}")
 
-        logger.warning("No valid credentials found. Run /tmp/gdrive_oauth_setup.py to login.")
+        # 2. Fallback to OAuth2 token.json
+        if os.path.exists(TOKEN_PATH):
+            try:
+                self.creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
+                if self.creds and self.creds.expired and self.creds.refresh_token:
+                    self.creds.refresh(Request())
+                    with open(TOKEN_PATH, "w") as token:
+                        token.write(self.creds.to_json())
+            except Exception as e:
+                logger.error("OAuth2 token refresh failed: %s", e)
+                self.creds = None
+
+            if self.creds:
+                self.service = build("drive", "v3", credentials=self.creds)
+                logger.info("Sync initialized (OAuth2/User Account).")
+                return
+
+        logger.warning("No valid credentials found. Set GDRIVE_SERVICE_ACCOUNT_JSON in .env or provide token.json.")
 
     def get_table_data(self, db: Session, model):
         """Fetch all rows from a model and return as a list of dictionaries."""
@@ -135,19 +144,18 @@ class GDriveSyncService:
             media = MediaIoBaseUpload(fh, mimetype="application/json", resumable=True)
 
             if files:
-                # Delete existing file(s) first as requested
-                for f in files:
-                    file_id = f["id"]
-                    self.service.files().delete(fileId=file_id).execute()
-                    logger.info(f"Deleted existing {filename} (ID: {file_id}) on GDrive.")
-
-            # Create new file
-            file_metadata = {
-                "name": filename,
-                "parents": [GDRIVE_FOLDER_ID]
-            }
-            self.service.files().create(body=file_metadata, media_body=media, fields="id").execute()
-            logger.info(f"Created new {filename} on GDrive.")
+                # Update existing file content in-place (works with shared folder permissions)
+                file_id = files[0]["id"]
+                self.service.files().update(fileId=file_id, media_body=media).execute()
+                logger.info(f"Updated {filename} (ID: {file_id}) on GDrive.")
+            else:
+                # Create new file
+                file_metadata = {
+                    "name": filename,
+                    "parents": [GDRIVE_FOLDER_ID]
+                }
+                self.service.files().create(body=file_metadata, media_body=media, fields="id").execute()
+                logger.info(f"Created new {filename} on GDrive.")
         except Exception as e:
             logger.error(f"Error syncing {filename} to GDrive: {e}")
 
@@ -172,7 +180,7 @@ class GDriveSyncService:
             done = False
             while not done:
                 status, done = downloader.next_chunk()
-            
+
             return fh.getvalue().decode("utf-8")
         except Exception as e:
             logger.error(f"Error downloading {filename} from GDrive: {e}")
@@ -201,7 +209,7 @@ class GDriveSyncService:
                 data = self.get_table_data(db, model)
                 content = json.dumps(data, indent=2)
                 self.upload_file(filename, content)
-            
+
             logger.info(f"Sync complete at {datetime.now(timezone.utc).isoformat()}")
         finally:
             db.close()
@@ -230,12 +238,12 @@ class GDriveSyncService:
                 content = self.download_file(filename)
                 if not content:
                     continue
-                
+
                 try:
                     data = json.loads(content)
                     if not isinstance(data, list):
                         continue
-                    
+
                     for row_data in data:
                         # Convert ISO date strings back to datetime objects where needed
                         for col in model.__table__.columns:
@@ -244,11 +252,11 @@ class GDriveSyncService:
                                     row_data[col.name] = datetime.fromisoformat(row_data[col.name])
                                 except (ValueError, TypeError):
                                     pass
-                        
+
                         # Use merge to handle potential existing data (unlikely in memory but safer)
                         obj = model(**row_data)
                         db.merge(obj)
-                    
+
                     db.commit()
                     logger.info(f"Loaded {len(data)} records from {filename}")
                 except Exception as e:
@@ -285,18 +293,23 @@ class GDriveSyncService:
                     logger.error(f"Critical error in GDrive sync loop: {e}")
             else:
                 logger.debug("No changes detected. Skipping sync cycle.")
-            
+
             time.sleep(SYNC_INTERVAL_SECONDS)
 
 
 def start_gdrive_sync():
     """Starts the sync service in a background daemon thread."""
+    global _sync_service
     service = GDriveSyncService()
     if not service.service:
         return
-    
+    _sync_service = service
+
     # Load data from GDrive on startup
     service.load_all_tables_from_gdrive()
-    
+
+    # Do an initial upload so current DB state is synced to Drive immediately
+    service.sync_all_tables()
+
     thread = threading.Thread(target=service.run_forever, daemon=True, name="GDriveSyncThread")
     thread.start()
